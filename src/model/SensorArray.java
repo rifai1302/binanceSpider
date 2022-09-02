@@ -19,11 +19,17 @@ public class SensorArray implements Runnable, Observable {
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
     private ArrayList<Observer> observerArray = new ArrayList<>();
+    private volatile int interval;
 
-    public SensorArray  (BinanceApiRestClient client, Account account)   {
+    public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
         this.client = client;
         this.account = account;
         candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
+        this.interval = interval;
+    }
+
+    public void setInterval(int interval)   {
+        this.interval = interval;
     }
 
     public List<Candlestick> getCandlesticks()  {
@@ -74,7 +80,7 @@ public class SensorArray implements Runnable, Observable {
         LocalDateTime prevTime = LocalDateTime.now();
         lastUpdate = getLastCandlestick();
         while(true) {
-            if (ChronoUnit.SECONDS.between(prevTime, LocalDateTime.now()) >= 10) {
+            if (ChronoUnit.MILLIS.between(prevTime, LocalDateTime.now()) >= interval) {
                 candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
                 prevTime = LocalDateTime.now();
                 updateObservers();

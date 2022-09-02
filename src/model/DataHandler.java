@@ -19,7 +19,7 @@ public class DataHandler {
     public DataHandler(BinanceApiRestClient client) {
         this.client = client;
         account = client.getAccount();
-        sensorArray = new SensorArray(client, account);
+        sensorArray = new SensorArray(client, account, 10000);
         arrayThread = new Thread(sensorArray);
         arrayThread.start();
         updateConstants();
