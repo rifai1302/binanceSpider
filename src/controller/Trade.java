@@ -4,8 +4,13 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import com.binance.api.client.BinanceApiRestClient;
+import throwable.InsufficientFundsException;
 import model.Constants;
 import model.DataHandler;
+import throwable.OngoingTradeException;
+import throwable.TerminatedTradeException;
+import throwable.UninitializedTradeException;
+
 import java.text.DecimalFormat;
 import static com.binance.api.client.domain.account.NewOrder.marketBuy;
 import static com.binance.api.client.domain.account.NewOrder.marketSell;
@@ -95,26 +100,3 @@ public class Trade {
 
 }
 
-class TerminatedTradeException extends Exception {
-    public TerminatedTradeException()    {
-        super("Attempted to change the state of a terminated trade.");
-    }
-}
-
-class OngoingTradeException extends Exception {
-    public OngoingTradeException()  {
-        super("Attempted to get terminal statistics of an ongoing trade.");
-    }
-}
-
-class UninitializedTradeException extends Exception {
-    public UninitializedTradeException()    {
-        super("Attempted to get terminal statistics of an uninitialized trade.");
-    }
-}
-
-class InsufficientFundsException extends Exception {
-    public InsufficientFundsException()    {
-        super("Attempted to get perform trade with insufficient funds.");
-    }
-}
