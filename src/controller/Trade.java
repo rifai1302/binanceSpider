@@ -10,7 +10,6 @@ import model.DataHandler;
 import throwable.OngoingTradeException;
 import throwable.TerminatedTradeException;
 import throwable.UninitializedTradeException;
-
 import java.text.DecimalFormat;
 import static com.binance.api.client.domain.account.NewOrder.marketBuy;
 import static com.binance.api.client.domain.account.NewOrder.marketSell;
