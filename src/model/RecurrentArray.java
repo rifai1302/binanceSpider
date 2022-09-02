@@ -15,15 +15,15 @@ public class RecurrentArray {
 
 
     public boolean containsNull()    {
-        for (int i = 0; i < array.length; i++)  {
-            if (array[i] == null)
+        for (Candlestick candlestick : array) {
+            if (candlestick == null)
                 return true;
         }
         return false;
     }
 
     public void add(Candlestick candlestick)    {
-        if (index > 4)  {
+        if (index >= array.length)  {
             index = 0;
         }
         array[index] = candlestick;
