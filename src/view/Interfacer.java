@@ -3,7 +3,6 @@ package view;
 
 import model.Constants;
 import controller.Controller;
-import controller.Trade;
 
 import java.util.Scanner;
 
@@ -27,22 +26,22 @@ public class Interfacer implements Runnable {
         return (ANSI_YELLOW + "BTC" + ANSI_RESET);
     }
 
-    private void gigelSay(String string)    {
-        System.out.print(ANSI_CYAN + "Gigel: " + ANSI_RESET);
+    private void spiderSay(String string)    {
+        System.out.print(ANSI_CYAN + "Binance Spider: " + ANSI_RESET);
         System.out.println(string);
     }
 
     public void constantsUpdated(){
-        gigelSay("Constantele au fost reincarcate!");
+        spiderSay("Constantele au fost reincarcate!");
     }
 
     public void announceStart() {
-        gigelSay("S-a început comerțul! " +
+        spiderSay("S-a început comerțul! " +
                 "Data serverului: " + ANSI_BLUE +  controller.getServerTime() + ANSI_RESET);
     }
 
     public void announceStop()  {
-        gigelSay(ANSI_YELLOW + "Comerțul s-a oprit. \n" + ANSI_RESET +
+        spiderSay(ANSI_YELLOW + "Comerțul s-a oprit. \n" + ANSI_RESET +
                 "Data serverului: " + ANSI_BLUE +  controller.getServerTime() + ANSI_RESET);
     }
 
@@ -55,34 +54,33 @@ public class Interfacer implements Runnable {
     }
 
     public void tradeOpened(int number)   {
-        gigelSay(ANSI_GREEN + "S-a deschis comerțul cu numărul " + number + ANSI_RESET +
+        spiderSay(ANSI_GREEN + "S-a deschis comerțul cu numărul " + number + ANSI_RESET +
                 ". Ora serverului: " + controller.getServerTime());
-        gigelSay("Prețul curent al Bitcoin-ului: " + controller.getLatestPrice() +
+        spiderSay("Prețul curent al Bitcoin-ului: " + controller.getLatestPrice() +
                 " " + ANSI_GREEN + Constants.stable + ANSI_RESET);
     }
 
     public void tradeClosed(int number)   {
-        gigelSay(ANSI_PURPLE + "S-a închis comerțul cu numărul " + number + ANSI_RESET +
+        spiderSay(ANSI_PURPLE + "S-a închis comerțul cu numărul " + number + ANSI_RESET +
                 ". Ora serverului: " + controller.getServerTime());
-        gigelSay("Prețul curent al Bitcoin-ului: " + controller.getLatestPrice() +
+        spiderSay("Prețul curent al Bitcoin-ului: " + controller.getLatestPrice() +
                 " " + ANSI_GREEN + Constants.stable + ANSI_RESET);
     }
 
     @Override
     public void run()   {
         Scanner scan = new Scanner(System.in);
-        System.out.println("");
-        gigelSay("Interfață pornită cu succes.");
-        gigelSay("În balanță se află "
+        spiderSay("Interfață pornită cu succes.");
+        spiderSay("În balanță se află "
                 + ANSI_GREEN + controller.getUSDTBalance() +
                 " USDT" + ANSI_RESET + " și "
                 + ANSI_YELLOW + controller.getBTCBalance() +
                 " BTC" + ANSI_RESET + ".");
-        gigelSay("Prețul curent al " + goldBTC() + ": " + ANSI_GREEN + controller.getLatestPrice() + " USDT" + ANSI_RESET + ".");
+        spiderSay("Prețul curent al " + goldBTC() + ": " + ANSI_GREEN + controller.getLatestPrice() + " USDT" + ANSI_RESET + ".");
         while(true) {
             String input = scan.nextLine();
             if (!controller.parseCommand(input))    {
-                gigelSay(ANSI_RED + "Comandă necunoscută." + ANSI_RESET);
+                spiderSay(ANSI_RED + "Comandă necunoscută." + ANSI_RESET);
             }
         }
     }
