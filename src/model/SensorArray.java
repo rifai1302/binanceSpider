@@ -4,7 +4,9 @@ import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
-import controller.Observer;
+import observable.Observer;
+import observable.Observable;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

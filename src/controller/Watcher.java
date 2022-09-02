@@ -2,16 +2,15 @@ package controller;
 
 import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
-import controller.pattern.Pattern;
-import controller.pattern.PatternSpotter;
-import model.Constants;
 import model.RecurrentArray;
 import model.SensorArray;
+import observable.Observer;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class Watcher implements Runnable, Observer    {
+public class Watcher implements Runnable, Observer {
 
     private final SensorArray sensorArray;
     private final Controller controller;
@@ -44,9 +43,6 @@ public class Watcher implements Runnable, Observer    {
         stopFlag = false;
         startTime = LocalDateTime.now();
         arrayUpdated = false;
-        PatternSpotter spotter = new PatternSpotter(sensorArray);
-        Thread spotterThread = new Thread(spotter);
-        spotterThread.start();
         while (!stopFlag)   {
             if (pauseTime != null && (ChronoUnit.MINUTES.between(pauseTime, LocalDateTime.now()) < 4))
                 continue;
