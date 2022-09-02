@@ -84,8 +84,6 @@ public class Controller {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
             trade = new Trade(dataHandler, dataHandler.getUSDTBalance());
-            //TrailingStop stoploss = new TrailingStop(dataHandler.getSensorArray(), this, trade);
-            //Thread thread = new Thread(stoploss);
             try {
                 trade.open();
                 interfacer.tradeOpened(tradeIndex);
@@ -93,9 +91,9 @@ public class Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //thread.start();
         }
     }
+
     public void sellSignal()    {
         if(trade != null)   {
             try {
