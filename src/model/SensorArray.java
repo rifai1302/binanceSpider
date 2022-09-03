@@ -18,7 +18,7 @@ public class SensorArray implements Runnable, Observable {
     private final Account account;
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
-    private ArrayList<Observer> observerArray = new ArrayList<>();
+    private volatile ArrayList<Observer> observerArray = new ArrayList<>();
     private volatile int interval;
 
     public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
