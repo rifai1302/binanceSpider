@@ -2,6 +2,7 @@ package controller.strategist;
 
 import controller.Controller;
 import model.SensorArray;
+import model.ShiftingArray;
 import observable.Observer;
 import controller.Status;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class RangeSpotter implements Runnable, Observer {
   private final SensorArray array;
   private final Controller controller;
   private volatile boolean arrayUpdated = false;
-  private volatile int span = 3;
+  private volatile int span = 4;
   private final int tolerance;
 
   public RangeSpotter(SensorArray array, Controller controller, int tolerance)  {
@@ -28,7 +29,7 @@ public class RangeSpotter implements Runnable, Observer {
     this.span = span;
   }
 
-  private Status getStatus(List<float> list)  {
+  private Status getStatus(List<Float> list)  {
     int bullishVote = 0;
     int bearishVote = 0;
     float prev = 0;
@@ -37,15 +38,16 @@ public class RangeSpotter implements Runnable, Observer {
         prev = average;
         continue;
       }
-      if (average < (prev - tolerance)) {
+      if (average < (prev)) {
         bullishVote++;
-      } else if (average > (prev + tolerance))  {
+      } else if (average > (prev))  {
         bearishVote++;
       }
+      prev = average;
     }
-    if (bearishVote > (bullishVote + 2))  {
+    if (bearishVote > bullishVote)  {
       return Bearish;
-    } else if (bullishVote > (bearishVote + 2)) {
+    } else if (bullishVote > bearishVote) {
       return Bullish;
     } else {
       return Inconclusive;
@@ -54,30 +56,23 @@ public class RangeSpotter implements Runnable, Observer {
 
   @Override
   public void run() {
-    ArrayList<float> averages = new ArrayList<float>();
-    Status status = Inconclusive;
-    if (arrayUpdated) {
-      averages.add(array.getMovingAverage(span));
-      if (averages.size() > 5)  {
-        ArrayList<float> highSwitchPoints = new ArrayList<float>();
-        ArrayList<float> lowSwitchPoints = new ArrayList<float>();
-        float prev = 0;
-        for (float average: averages) {
-          if (prev == 0)  {
-            prev = average;
-            continue;
-          }
-          status = getStatus(averages);
-          if ((average < (prev - tolerance)) && (status == Bearish)) {
-            highSwitchPoints.add(average);
-          } else if ((average > (prev + tolerance)) && (status != Bullish)){
-            lowSwitchPoints.add(average);
-          }
+    ShiftingArray<Float> shifting = new ShiftingArray<>(5);
+    while (1 == 1) {
+      if (arrayUpdated) {
+        shifting.add(array.getMovingAverage(7));
+        if (shifting.isFilled()) {
+          List<Float> averages = shifting.getStandardArray();
+          Status status = getStatus(averages);
+          System.out.println(status);
+            if ((status == Bullish) && (averages.get(averages.size() - 1)) > array.getMovingAverage(20))  {
+                System.out.println("High switch");
+            } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
+                System.out.println("Low switch");
+              }
         }
+        arrayUpdated = false;
       }
     }
-
-
   }
 
   @Override

@@ -1,6 +1,7 @@
 package controller;
 
 import controller.commands.Command;
+import controller.strategist.RangeSpotter;
 import model.DataHandler;
 import view.Interfacer;
 import java.lang.reflect.Constructor;
@@ -23,6 +24,9 @@ public class Controller {
         this.interfacer = interfacer;
         interfacer.setController(this);
         format.setRoundingMode(RoundingMode.FLOOR);
+        RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 2);
+        Thread thread = new Thread(spotter);
+        thread.start();
     }
 
     public boolean parseCommand(String command) {
