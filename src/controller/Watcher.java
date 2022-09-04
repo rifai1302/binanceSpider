@@ -1,13 +1,12 @@
 package controller;
 
 import com.binance.api.client.domain.market.Candlestick;
-import com.binance.api.client.domain.market.CandlestickInterval;
-import model.RecurrentArray;
 import model.SensorArray;
 import observable.Observer;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Watcher implements Runnable, Observer {
@@ -47,32 +46,6 @@ public class Watcher implements Runnable, Observer {
             if (pauseTime != null && (ChronoUnit.MINUTES.between(pauseTime, LocalDateTime.now()) < 4))
                 continue;
             if (arrayUpdated)    {
-                List<Candlestick> candlesticks = sensorArray.getCandlesticks();
-              RecurrentArray array = new RecurrentArray(4);
-              array.fillWithLast(candlesticks);
-                final float close = Float.parseFloat(array.get(3).getClose());
-              /* if (sensorArray.getMovingAverage(7) > sensorArray.getMovingAverage(99))
-                    if (sensorArray.getMovingAverage(4) > sensorArray.getMovingAverage(7))
-                        if (sensorArray.getMomentum(4) > Constants.triggerMomentum)
-                            if  (flaggerThread == null || !flaggerThread.isAlive()) {
-                            controller.buySignal();
-                            ExitFlagger flagger = new ExitFlagger(sensorArray, controller, false);
-                            flaggerThread = new Thread(flagger);
-                            flaggerThread.start();
-                                System.out.println("Short");
-                        } */
-                    if ((sensorArray.getMAIncrease(CandlestickInterval.FIVE_MINUTES, 4) > 11.5)
-                            && (sensorArray.getMAIncrease(CandlestickInterval.ONE_MINUTE, 99) > 3)
-                            && (sensorArray.distanceBetweenMA(15, 99) > 20))
-                        if (flaggerThread == null || !flaggerThread.isAlive())   {
-                            controller.buySignal();
-                            ExitFlagger flagger = new ExitFlagger(sensorArray, controller, true);
-                            flaggerThread = new Thread(flagger);
-                            flaggerThread.start();
-                            System.out.println("Long");
-                        }
-
-              arrayUpdated = false;
             }
         }
     }
