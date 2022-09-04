@@ -57,20 +57,53 @@ public class RangeSpotter implements Runnable, Observer {
   @Override
   public void run() {
     ShiftingArray<Float> shifting = new ShiftingArray<>(5);
+    byte expiration = 0;
+    boolean inRange = false;
+    float highSwitch = 0;
+    float lowSwitch = 0;
     while (1 == 1) {
       if (arrayUpdated) {
-        shifting.add(array.getMovingAverage(7));
+        shifting.add(array.getMovingAverage(10));
         if (shifting.isFilled()) {
           List<Float> averages = shifting.getStandardArray();
           Status status = getStatus(averages);
-          System.out.println(status);
             if ((status == Bullish) && (averages.get(averages.size() - 1)) > array.getMovingAverage(20))  {
-                System.out.println("High switch");
+                if (highSwitch == 0) {
+                  highSwitch = averages.get(averages.size() - 1);
+                  System.out.println("High switch");
+                }
+                expiration = 0;
+                if ((lowSwitch != 0) && (!inRange)) {
+                  inRange = true;
+                }
+                if (inRange)  {
+                  controller.sellSignal();
+                }
             } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
-                System.out.println("Low switch");
+                if (lowSwitch == 0) {
+                  lowSwitch = averages.get(averages.size() - 1);
+                  System.out.println("Low switch");
+                }
+                expiration = 0;
+                if((highSwitch != 0) && (!inRange)) {
+                  inRange = true;
+                }
+                if (inRange)  {
+                  controller.buySignal();
+                }
               }
         }
         arrayUpdated = false;
+        expiration++;
+        if (expiration >= 5 & ((highSwitch == 0) || (lowSwitch == 0)))  {
+          highSwitch = 0;
+          lowSwitch = 0;
+        }
+        if (expiration >= 30) {
+          highSwitch = 0;
+          lowSwitch = 0;
+          inRange = false;
+        }
       }
     }
   }
