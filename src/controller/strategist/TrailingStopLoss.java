@@ -1,15 +1,17 @@
-package controller;
+package controller.strategist;
 
+import controller.Controller;
+import controller.Trade;
 import model.SensorArray;
 
-public class TrailingStop implements Runnable {
+public class TrailingStopLoss implements Runnable {
 
     private final SensorArray array;
     private final Trade trade;
     private final Controller controller;
 
 
-    public TrailingStop (SensorArray array, Controller controller, Trade trade)    {
+    public TrailingStopLoss(SensorArray array, Controller controller, Trade trade)    {
         this.array = array;
         this.controller = controller;
         this.trade = trade;
