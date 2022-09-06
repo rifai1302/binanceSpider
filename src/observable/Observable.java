@@ -8,4 +8,6 @@ public interface Observable {
 
     void updateObservers();
 
+    void addObserver(Observer observer);
+
 }
