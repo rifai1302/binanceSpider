@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -148,6 +150,21 @@
          </font>
       </Text>
       <Text fx:id="successRateValue" boundsType="VISUAL" fill="#00ff1b" fontSmoothingType="LCD" layoutX="257.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="100%">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="spiderLogo" fitHeight="125.0" fitWidth="191.0" layoutX="652.0" layoutY="340.0" onMouseClicked="#onLogoMouseClicked" onMouseEntered="#onLogoMouseEntered" onMouseExited="#onLogoMouseExited" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="cpuUsage" boundsType="VISUAL" fill="WHITE" layoutX="560.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Utilizarea CPU-ului:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="cpuUsageValue" boundsType="VISUAL" fill="#00ccff" fontSmoothingType="LCD" layoutX="819.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0%">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>

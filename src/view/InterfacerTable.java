@@ -4,6 +4,9 @@ import model.SensorArray;
 import observable.Observable;
 import observable.Observer;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 public class InterfacerTable implements Observer {
 
   private SensorArray array;
@@ -16,6 +19,8 @@ public class InterfacerTable implements Observer {
   private int trades = 0;
   private byte status = 0;
   private int successRate = 100;
+  private double bloom = 1;
+  private final LocalDateTime startTime = LocalDateTime.now();
 
   public void setArray(SensorArray array) {
     this.array = array;
@@ -55,11 +60,7 @@ public class InterfacerTable implements Observer {
   }
 
   public int getRunTime() {
-    return runTime;
-  }
-
-  public void setRunTime(int runTime) {
-    this.runTime = runTime;
+    return (int) ChronoUnit.SECONDS.between(startTime, LocalDateTime.now());
   }
 
   public int getTrades() {
@@ -89,6 +90,13 @@ public class InterfacerTable implements Observer {
   @Override
   public void observableUpdated() {
     setCurrentBalance(array.getUSDTBalance());
+  }
 
+  public double getBloom() {
+    return bloom;
+  }
+
+  public void setBloom(double bloom) {
+    this.bloom = bloom;
   }
 }
