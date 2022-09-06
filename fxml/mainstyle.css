@@ -1,0 +1,7 @@
+.pane {
+-fx-background-color: linear-gradient(to right, rgb(24, 24, 24), rgb(54, 54, 54));
+}
+
+.button {
+  -fx-text-fill: rgb(252, 252, 252);
+}

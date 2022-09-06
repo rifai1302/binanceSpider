@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="950.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="223.0" layoutX="31.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
+         <effect>
+            <Glow level="1.0" />
+         </effect>
+      </Rectangle>
+      <Text fx:id="currentBalance" boundsType="VISUAL" fill="WHITE" layoutX="55.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Balanta curenta:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="currentBalanceValue" boundsType="VISUAL" fill="#00ff11" fontSmoothingType="LCD" layoutX="281.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 USDT">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="221.0" layoutX="536.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
+         <effect>
+            <Glow level="1.0" />
+         </effect>
+      </Rectangle>
+      <Text fx:id="financialText" boundsType="VISUAL" fill="WHITE" layoutX="86.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Informatii financiare">
+         <font>
+            <Font name="ArtifaktElement-Black" size="27.0" />
+         </font>
+         <effect>
+            <Glow level="0.47" />
+         </effect>
+      </Text>
+      <Text fx:id="lastTrade" boundsType="VISUAL" fill="WHITE" layoutX="55.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Ultimul profit:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="lastTradeValue" boundsType="VISUAL" fill="#00ff11" fontSmoothingType="LCD" layoutX="249.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="+0 USDT">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="averageTrade" boundsType="VISUAL" fill="WHITE" layoutX="55.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Profitul mediu:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="averageTradeValue" boundsType="VISUAL" fill="#00ff11" fontSmoothingType="LCD" layoutX="252.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="+0 USDT">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="totalProfit" boundsType="VISUAL" fill="WHITE" layoutX="55.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Profitul total:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="totalProfitValue" boundsType="VISUAL" fill="#00ff11" fontSmoothingType="LCD" layoutX="241.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="+0 USDT">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="technicalText" boundsType="VISUAL" fill="WHITE" layoutX="610.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Informatii tehnice">
+         <font>
+            <Font name="ArtifaktElement-Black" size="27.0" />
+         </font>
+         <effect>
+            <Glow level="0.47" />
+         </effect>
+      </Text>
+      <Text fx:id="uptime" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Timp de rulare:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="uptimeValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="768.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 s">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="trades" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Trade-uri efectuate:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="tradesValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="831.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="trades1" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="currentStatus" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Statusul curent:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="RED" fontSmoothingType="LCD" layoutX="778.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="223.0" layoutX="30.0" layoutY="403.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
+         <effect>
+            <Glow level="1.0" />
+         </effect>
+      </Rectangle>
+      <Text fx:id="performanceText" boundsType="VISUAL" fill="WHITE" layoutX="81.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Indici de performanta">
+         <font>
+            <Font name="ArtifaktElement-Black" size="27.0" />
+         </font>
+         <effect>
+            <Glow level="0.47" />
+         </effect>
+      </Text>
+      <Text fx:id="successfulTrades" boundsType="VISUAL" fill="WHITE" layoutX="51.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Trade-uri reusite:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="successfulTradesValue" boundsType="VISUAL" fill="#00ff11" fontSmoothingType="LCD" layoutX="292.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="failedTrades" boundsType="VISUAL" fill="WHITE" layoutX="51.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Trade-uri esuate:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="failedTradesValue" boundsType="VISUAL" fill="#00ff11" fontSmoothingType="LCD" layoutX="292.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="successRate" boundsType="VISUAL" fill="WHITE" layoutX="52.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Rata de succes:">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="successRateValue" boundsType="VISUAL" fill="#00ff1b" fontSmoothingType="LCD" layoutX="257.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="100%">
+         <font>
+            <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>

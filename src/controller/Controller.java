@@ -4,6 +4,8 @@ import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
 import view.Interfacer;
+import view.InterfacerTable;
+
 import java.lang.reflect.Constructor;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -13,16 +15,15 @@ import java.awt.Toolkit;
 public class Controller {
 
     private final DataHandler dataHandler;
-    private final Interfacer interfacer;
+    private final InterfacerTable interfacer;
     private Watcher watcher;
     private Trade trade;
     private int tradeIndex = 1;
     private final DecimalFormat format = new DecimalFormat("#.##");
 
-    public Controller(Interfacer interfacer, DataHandler dataHandler) {
+    public Controller(InterfacerTable interfacer, DataHandler dataHandler) {
         this.dataHandler = dataHandler;
         this.interfacer = interfacer;
-        interfacer.setController(this);
         format.setRoundingMode(RoundingMode.FLOOR);
         RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 2);
         Thread thread = new Thread(spotter);
@@ -60,28 +61,28 @@ public class Controller {
 
     public void start() {
         if (watcher != null)    {
-            interfacer.alreadyStarted();
+            //interfacer.alreadyStarted();
         } else {
             Toolkit.getDefaultToolkit().beep();
             watcher = new Watcher(dataHandler.getSensorArray(), this);
             final Thread watcherThread = new Thread(watcher);
             watcherThread.start();
-            interfacer.announceStart();
+            //interfacer.announceStart();
         }
     }
 
     public void stop() {
         try {
             watcher.stop();
-            interfacer.announceStop();
+            //interfacer.announceStop();
         } catch (Exception e)    {
-            interfacer.notStarted();
+            //interfacer.notStarted();
         }
     }
 
     public void updateConstants()   {
         dataHandler.updateConstants();
-        interfacer.constantsUpdated();
+        //interfacer.constantsUpdated();
     }
 
     public void buySignal() {
@@ -112,7 +113,7 @@ public class Controller {
     }
 
     public void tradeClosed()   {
-        interfacer.tradeClosed(tradeIndex);
+        //interfacer.tradeClosed(tradeIndex);
         tradeIndex++;
         trade = null;
         watcher.pause();

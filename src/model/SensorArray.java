@@ -7,6 +7,7 @@ import com.binance.api.client.domain.market.CandlestickInterval;
 import observable.Observer;
 import observable.Observable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class SensorArray implements Runnable, Observable {
     private volatile Candlestick lastUpdate;
     private volatile ArrayList<Observer> observerArray = new ArrayList<>();
     private volatile int interval;
+    private final DecimalFormat stableFormat = new DecimalFormat("0.00");
 
     public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
         this.client = client;
@@ -34,6 +36,14 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Candlestick> getCandlesticks()  {
         return candlesticks;
+    }
+
+    public float getUSDTBalance()   {
+        return (stableFormat(account.getAssetBalance("USDT").getFree()));
+    }
+
+    private float stableFormat(String f) {
+        return Float.parseFloat(stableFormat.format(Float.valueOf(f)));
     }
 
     public Candlestick getLastCandlestick() {
