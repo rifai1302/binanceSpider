@@ -6,20 +6,18 @@ import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
 import observable.Observer;
 import observable.Observable;
-
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SensorArray implements Runnable, Observable {
 
+    private final LocalDateTime startTime = LocalDateTime.now();
     private final BinanceApiRestClient client;
     private final Account account;
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
-    private volatile ArrayList<Observer> observerArray = new ArrayList<>();
     private volatile int interval;
     private final DecimalFormat stableFormat = new DecimalFormat("0.00");
 
@@ -64,25 +62,8 @@ public class SensorArray implements Runnable, Observable {
         return ma;
     }
 
-    public float distanceBetweenMA(int MA1, int MA2) {
-        final float close = Float.parseFloat(getLastInstantCandlestick().getClose());
-        if (getMovingAverage(MA1) > getMovingAverage(MA2))
-            return(getMovingAverage(MA1) - getMovingAverage(MA2));
-        return(getMovingAverage(MA2) - getMovingAverage(MA1));
-    }
-
-    public float getMAIncrease(CandlestickInterval interval, int iter)    {
-        List<Candlestick> candlesticks = client.getCandlestickBars(Constants.getCurrency(), interval);
-        float avg = 0;
-        for (int i = candlesticks.size() - 2; i > candlesticks.size() - iter; i--) {
-            avg += Float.parseFloat(candlesticks.get(i + 1).getClose()) - Float.parseFloat(candlesticks.get(i).getClose());
-        }
-        avg = avg / iter - 1;
-        return avg;
-    }
-
     public void addObserver (Observer observer)   {
-        observerArray.add(observer);
+        observers.add(observer);
     }
 
     @Override
@@ -101,7 +82,7 @@ public class SensorArray implements Runnable, Observable {
 
     @Override
     public void updateObservers() {
-        for (Observer observer : observerArray) {
+        for (Observer observer : observers) {
             observer.observableUpdated();
         }
     }
