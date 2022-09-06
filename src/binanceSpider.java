@@ -22,9 +22,10 @@ public class binanceSpider {
         BinanceApiRestClient client = factory.newRestClient();
         DataHandler dataHandler = new DataHandler(client);
         Interfacer interfacer = new Interfacer();
-        interfacer.getTable().setArray(dataHandler.getSensorArray());
+        Controller controller = new Controller(dataHandler);
+        interfacer.setController(controller);
+        interfacer.setDataHandler(dataHandler);
         Thread view = new Thread(interfacer);
         view.start();
-        Controller controller = new Controller(interfacer.getTable(), dataHandler);
     }
 }

@@ -106,7 +106,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="RED" fontSmoothingType="LCD" layoutX="778.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
+      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="778.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -167,6 +167,16 @@
       <Text fx:id="cpuUsageValue" boundsType="VISUAL" fill="#00ccff" fontSmoothingType="LCD" layoutX="819.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0%">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="toggleButton" boundsType="VISUAL" fill="WHITE" fontSmoothingType="LCD" layoutX="637.0" layoutY="530.0" onMouseClicked="#onToggleButtonClicked" onMouseEntered="#onToggleButtonEntered" onMouseExited="#onToggleButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Porneste" textAlignment="CENTER">
+         <font>
+            <Font name="Bauhaus 93" size="49.0" />
+         </font>
+      </Text>
+      <Text fx:id="settingsButton" boundsType="VISUAL" fill="WHITE" fontSmoothingType="LCD" layoutX="669.0" layoutY="602.0" onMouseClicked="#onSettingsButtonClicked" onMouseEntered="#onSettingsButtonEntered" onMouseExited="#onSettingsButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Setari" textAlignment="CENTER">
+         <font>
+            <Font name="Bauhaus 93" size="49.0" />
          </font>
       </Text>
    </children>

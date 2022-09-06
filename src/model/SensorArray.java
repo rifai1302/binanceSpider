@@ -9,23 +9,51 @@ import observable.Observable;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SensorArray implements Runnable, Observable {
 
-    private final LocalDateTime startTime = LocalDateTime.now();
     private final BinanceApiRestClient client;
     private final Account account;
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
     private volatile int interval;
     private final DecimalFormat stableFormat = new DecimalFormat("0.00");
+    private volatile ArrayList<Float> balanceHistory = new ArrayList<>();
 
     public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
         this.client = client;
         this.account = account;
         candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
         this.interval = interval;
+    }
+
+    public float getLastProfit()    {
+        try {
+            return balanceHistory.get(balanceHistory.size() - 1) - balanceHistory.get(balanceHistory.size() - 2);
+        } catch (IndexOutOfBoundsException e)   {
+            return 0;
+        }
+    }
+
+    public float getAverageProfit() {
+        float avg = 0;
+        for (int i = 1; i < balanceHistory.size(); i++) {
+            avg += balanceHistory.get(i) - balanceHistory.get(0);
+        }
+        avg = avg / balanceHistory.size();
+        if (Float.isNaN(avg))
+            return 0;
+        return avg;
+    }
+
+    public float getTotalProfit()   {
+        float total = 0;
+        for (int i = 1; i < balanceHistory.size(); i++) {
+            total += balanceHistory.get(i) - balanceHistory.get(0);
+        }
+        return total;
     }
 
     public void setInterval(int interval)   {
@@ -62,6 +90,7 @@ public class SensorArray implements Runnable, Observable {
         return ma;
     }
 
+    @Override
     public void addObserver (Observer observer)   {
         observers.add(observer);
     }
@@ -76,6 +105,9 @@ public class SensorArray implements Runnable, Observable {
                 prevTime = LocalDateTime.now();
                 updateObservers();
                 lastUpdate = candlesticks.get(0);
+                if ((getUSDTBalance() > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
+                    balanceHistory.add(getUSDTBalance());
+                }
             }
         }
     }

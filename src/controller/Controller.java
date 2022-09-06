@@ -3,34 +3,33 @@ package controller;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
-import view.Interfacer;
-import view.InterfacerTable;
 
 import java.lang.reflect.Constructor;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.awt.Toolkit;
 
 public class Controller {
 
     private final DataHandler dataHandler;
-    private final InterfacerTable interfacer;
     private Watcher watcher;
     private Trade trade;
-    private int tradeIndex = 1;
     private final DecimalFormat format = new DecimalFormat("#.##");
+    private int status = 0;
+    private LocalDateTime startTime;
 
-    public Controller(InterfacerTable interfacer, DataHandler dataHandler) {
+    public Controller (DataHandler dataHandler) {
         this.dataHandler = dataHandler;
-        this.interfacer = interfacer;
         format.setRoundingMode(RoundingMode.FLOOR);
         RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 2);
         Thread thread = new Thread(spotter);
         thread.start();
     }
 
-    public boolean parseCommand(String command) {
+    public void parseCommand(String command) {
         try {
             ClassLoader loader = Command.class.getClassLoader();
             Class<?> driver = Class.forName("controller.commands." + command, true, loader);
@@ -38,9 +37,7 @@ public class Controller {
             Command com = (Command)  commandConstructor.newInstance();
             com.execute(this);
         } catch (Exception e) {
-            return (false);
         }
-        return true;
     }
 
     public float getLatestPrice() {
@@ -60,29 +57,36 @@ public class Controller {
     }
 
     public void start() {
-        if (watcher != null)    {
-            //interfacer.alreadyStarted();
-        } else {
+        if (watcher == null) {
+            status = 3;
             Toolkit.getDefaultToolkit().beep();
             watcher = new Watcher(dataHandler.getSensorArray(), this);
             final Thread watcherThread = new Thread(watcher);
             watcherThread.start();
-            //interfacer.announceStart();
+            status = 1;
+            startTime = LocalDateTime.now();
         }
     }
 
     public void stop() {
         try {
             watcher.stop();
-            //interfacer.announceStop();
+            status = 0;
         } catch (Exception e)    {
             //interfacer.notStarted();
         }
+        startTime = null;
     }
 
     public void updateConstants()   {
         dataHandler.updateConstants();
         //interfacer.constantsUpdated();
+    }
+
+    public int getUpTime()  {
+        if (startTime == null)
+            return 0;
+        return (int) ChronoUnit.SECONDS.between(startTime, LocalDateTime.now());
     }
 
     public void buySignal() {
@@ -114,8 +118,11 @@ public class Controller {
 
     public void tradeClosed()   {
         //interfacer.tradeClosed(tradeIndex);
-        tradeIndex++;
         trade = null;
         watcher.pause();
+    }
+
+    public int getStatus() {
+        return status;
     }
 }
