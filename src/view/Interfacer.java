@@ -24,6 +24,7 @@ public class Interfacer extends Application implements Runnable {
   private static DataHandler dataHandler;
   private static Controller controller;
   private volatile Parent root;
+  private ChronoStringFormat format;
 
   public void setDataHandler(DataHandler dataHandler)  {
     Interfacer.dataHandler = dataHandler;
@@ -37,6 +38,7 @@ public class Interfacer extends Application implements Runnable {
   public void start(Stage primaryStage) throws IOException {
     URL url = new File("fxml/main.fxml").toURI().toURL();
     root = FXMLLoader.load(url);
+    format = new ChronoStringFormat();
     Scene scene = new Scene(root);
     Text currentBalance = (Text) root.lookup("#currentBalanceValue");
     Text lastTrade = (Text) root.lookup("#lastTradeValue");
@@ -57,7 +59,7 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> lastTrade.setText(String.valueOf(array.getLastProfit()) + " USDT");
       updater.add(update);
-      update = () -> uptime.setText(String.valueOf(controller.getUpTime()));
+      update = () -> uptime.setText(format.format(controller.getUpTime()));
       updater.add(update);
       update = () -> avgTrade.setText(String.valueOf(array.getAverageProfit()) + " USDT");
       updater.add(update);

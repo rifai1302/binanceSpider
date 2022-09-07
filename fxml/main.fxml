@@ -20,7 +20,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="currentBalanceValue" fill="#00ff11" fontSmoothingType="LCD" layoutX="271.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 USDT" wrappingWidth="140.27496337890625">
+      <Text fx:id="currentBalanceValue" fill="#00ff11" fontSmoothingType="LCD" layoutX="274.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 USDT" wrappingWidth="140.27496337890625">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -81,7 +81,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="uptimeValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="763.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 s" wrappingWidth="72.77497482299805">
+      <Text fx:id="uptimeValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="763.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 s" wrappingWidth="201.47398376464844">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -91,7 +91,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="tradesValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="828.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="41.47503662109375">
+      <Text fx:id="tradesValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="828.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="41.47503662109375">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -106,12 +106,12 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="778.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
+      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="778.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="223.0" layoutX="30.0" layoutY="403.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="180.0" layoutX="29.0" layoutY="402.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="392.0">
          <effect>
             <Glow level="1.0" />
          </effect>
@@ -129,7 +129,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="successfulTradesValue" fill="#00ff11" fontSmoothingType="LCD" layoutX="289.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="62.77499771118164">
+      <Text fx:id="successfulTradesValue" fill="#00ff11" fontSmoothingType="LCD" layoutX="289.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="62.77499771118164">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -139,7 +139,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="failedTradesValue" fill="#00ff11" fontSmoothingType="LCD" layoutX="285.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="41.47503662109375">
+      <Text fx:id="failedTradesValue" fill="#00ff11" fontSmoothingType="LCD" layoutX="285.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="41.47503662109375">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -164,7 +164,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="cpuUsageValue" fill="#00ccff" fontSmoothingType="LCD" layoutX="814.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0%" wrappingWidth="72.77497482299805">
+      <Text fx:id="cpuUsageValue" fill="#00ccff" fontSmoothingType="LCD" layoutX="820.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0%" wrappingWidth="72.77497482299805">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
