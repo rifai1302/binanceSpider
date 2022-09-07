@@ -63,6 +63,8 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> totalProfit.setText(String.valueOf(array.getTotalProfit()) + " USDT");
       updater.add(update);
+      update = () -> trades.setText(String.valueOf(controller.getTrades()));
+      updater.add(update);
       switch (controller.getStatus()) {
         case 0 -> {
           update = () -> status.setText("Oprit");

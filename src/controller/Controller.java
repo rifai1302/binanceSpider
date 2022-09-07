@@ -20,6 +20,7 @@ public class Controller {
     private final DecimalFormat format = new DecimalFormat("#.##");
     private int status = 0;
     private LocalDateTime startTime;
+    private int trades = 0;
 
     public Controller (DataHandler dataHandler) {
         this.dataHandler = dataHandler;
@@ -109,6 +110,7 @@ public class Controller {
             /*try {
                 trade.close();
                 tradeClosed();
+                trades++;
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
@@ -124,5 +126,9 @@ public class Controller {
 
     public int getStatus() {
         return status;
+    }
+
+    public int getTrades()  {
+        return trades;
     }
 }
