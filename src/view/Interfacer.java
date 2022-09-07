@@ -40,6 +40,7 @@ public class Interfacer extends Application implements Runnable {
     root = FXMLLoader.load(url);
     format = new ChronoStringFormat();
     Scene scene = new Scene(root);
+    primaryStage.setResizable(false);
     Text currentBalance = (Text) root.lookup("#currentBalanceValue");
     Text lastTrade = (Text) root.lookup("#lastTradeValue");
     Text avgTrade = (Text) root.lookup("#averageTradeValue");
