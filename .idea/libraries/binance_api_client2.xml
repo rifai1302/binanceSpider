@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="binance-api-client">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/binance-api-client.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
