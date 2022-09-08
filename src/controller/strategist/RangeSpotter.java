@@ -65,12 +65,12 @@ public class RangeSpotter implements Runnable, Observer {
     float lowSwitch = 0;
     while (1 == 1) {
       if (arrayUpdated) {
-        shifting.add(array.getMovingAverage(10));
+        shifting.add(array.getMovingAverage(4));
         if (shifting.isFilled()) {
           List<Float> averages = shifting.getStandardArray();
           Status status = getStatus(averages);
-            if ((status == Bullish) && (averages.get(averages.size() - 1)) > array.getMovingAverage(20))  {
-                if (highSwitch == 0) {
+            if ((status == Bullish) && (averages.get(averages.size() - 1) > array.getMovingAverage(20)))  {
+                if ((highSwitch == 0) || (averages.get(averages.size() - 1) > highSwitch)){
                   highSwitch = averages.get(averages.size() - 1);
                   System.out.println("High switch");
                   Toolkit.getDefaultToolkit().beep();
@@ -83,7 +83,7 @@ public class RangeSpotter implements Runnable, Observer {
                   controller.sellSignal();
                 }
             } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
-                if (lowSwitch == 0) {
+                if ((lowSwitch == 0) || (averages.get(averages.size() - 1) < lowSwitch)){
                   lowSwitch = averages.get(averages.size() - 1);
                   System.out.println("Low switch");
                   Toolkit.getDefaultToolkit().beep();
@@ -98,15 +98,19 @@ public class RangeSpotter implements Runnable, Observer {
               }
         }
         arrayUpdated = false;
+        if ((highSwitch != 0) || (lowSwitch != 0))
         expiration++;
-        if (expiration >= 10 && ((highSwitch == 0) || (lowSwitch == 0)))  {
+        if (expiration >= 20 && ((highSwitch == 0) || (lowSwitch == 0)))  {
           highSwitch = 0;
           lowSwitch = 0;
+          expiration = 0;
         }
         if (expiration >= 30) {
           highSwitch = 0;
           lowSwitch = 0;
           inRange = false;
+          shifting = new ShiftingArray<>(5);
+          expiration = 0;
         }
       }
     }
