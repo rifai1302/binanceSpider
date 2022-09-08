@@ -5,6 +5,8 @@ import model.SensorArray;
 import model.ShiftingArray;
 import observable.Observer;
 import controller.Status;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,16 +40,16 @@ public class RangeSpotter implements Runnable, Observer {
         prev = average;
         continue;
       }
-      if (average < (prev)) {
+      if (average < prev) {
         bullishVote++;
-      } else if (average > (prev))  {
+      } else if (average > prev)  {
         bearishVote++;
       }
       prev = average;
     }
-    if (bearishVote > bullishVote)  {
+    if (bearishVote > list.size() / 2)  {
       return Bearish;
-    } else if (bullishVote > bearishVote) {
+    } else if (bullishVote > list.size() / 2) {
       return Bullish;
     } else {
       return Inconclusive;
@@ -71,6 +73,7 @@ public class RangeSpotter implements Runnable, Observer {
                 if (highSwitch == 0) {
                   highSwitch = averages.get(averages.size() - 1);
                   System.out.println("High switch");
+                  Toolkit.getDefaultToolkit().beep();
                 }
                 expiration = 0;
                 if ((lowSwitch != 0) && (!inRange)) {
@@ -83,6 +86,7 @@ public class RangeSpotter implements Runnable, Observer {
                 if (lowSwitch == 0) {
                   lowSwitch = averages.get(averages.size() - 1);
                   System.out.println("Low switch");
+                  Toolkit.getDefaultToolkit().beep();
                 }
                 expiration = 0;
                 if((highSwitch != 0) && (!inRange)) {
@@ -95,7 +99,7 @@ public class RangeSpotter implements Runnable, Observer {
         }
         arrayUpdated = false;
         expiration++;
-        if (expiration >= 5 & ((highSwitch == 0) || (lowSwitch == 0)))  {
+        if (expiration >= 10 && ((highSwitch == 0) || (lowSwitch == 0)))  {
           highSwitch = 0;
           lowSwitch = 0;
         }
