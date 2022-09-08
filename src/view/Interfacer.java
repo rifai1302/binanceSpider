@@ -36,6 +36,7 @@ public class Interfacer extends Application implements Runnable {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
+    Platform.setImplicitExit(false);
     URL url = new File("fxml/main.fxml").toURI().toURL();
     root = FXMLLoader.load(url);
     format = new ChronoStringFormat();
@@ -68,6 +69,13 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> trades.setText(String.valueOf(controller.getTrades()));
       updater.add(update);
+      if(controller.showUI()) {
+        update = () -> {
+          primaryStage.setScene(scene);
+            primaryStage.show();
+        };
+        updater.add(update);
+      }
       switch (controller.getStatus()) {
         case 0 -> {
           update = () -> status.setText("Oprit");
@@ -101,7 +109,6 @@ public class Interfacer extends Application implements Runnable {
         try {
           Thread.sleep(500);
         } catch (InterruptedException ex) {
-          ex.printStackTrace();
         }
         for (Runnable runnable: updater) {
           Platform.runLater(runnable);

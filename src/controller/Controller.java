@@ -3,14 +3,20 @@ package controller;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
+import view.Interfacer;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.math.RoundingMode;
+import java.nio.Buffer;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.awt.Toolkit;
 
 public class Controller {
 
@@ -21,6 +27,8 @@ public class Controller {
     private int status = 0;
     private LocalDateTime startTime;
     private int trades = 0;
+    private SystemTray tray = SystemTray.getSystemTray();
+    private boolean showUI = false;
 
     public Controller (DataHandler dataHandler) {
         this.dataHandler = dataHandler;
@@ -28,6 +36,27 @@ public class Controller {
         RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 2);
         Thread thread = new Thread(spotter);
         thread.start();
+        File iconFile = new File("fxml/trayicon.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
+        PopupMenu popup = new PopupMenu();
+        TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
+        trayIcon.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showUI = true;
+                try {
+                    Thread.sleep(550);
+                } catch (Exception h)   {
+                }
+                showUI = false;
+            }
+        });
+
+        try {
+            tray.add(trayIcon);
+        } catch (Exception e)   {
+            e.printStackTrace();
+        }
+
     }
 
     public void parseCommand(String command) {
@@ -55,6 +84,10 @@ public class Controller {
 
     public Date getServerTime() {
         return dataHandler.getServerTime();
+    }
+
+    public boolean showUI() {
+        return showUI;
     }
 
     public void start() {
