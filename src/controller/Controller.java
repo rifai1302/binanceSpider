@@ -33,7 +33,7 @@ public class Controller {
     public Controller (DataHandler dataHandler) {
         this.dataHandler = dataHandler;
         format.setRoundingMode(RoundingMode.FLOOR);
-        RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 2);
+        RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 7);
         Thread thread = new Thread(spotter);
         thread.start();
         File iconFile = new File("fxml/trayicon.png");
