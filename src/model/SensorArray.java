@@ -56,6 +56,15 @@ public class SensorArray implements Runnable, Observable {
         return total;
     }
 
+    public int getSuccessfulTrades()    {
+        int success = 0;
+        for (int i = 1; i < balanceHistory.size(); i++) {
+            if (balanceHistory.get(i) > balanceHistory.get(i - 1))
+                success++;
+        }
+        return success;
+    }
+
     public void setInterval(int interval)   {
         this.interval = interval;
     }

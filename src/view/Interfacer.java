@@ -49,6 +49,8 @@ public class Interfacer extends Application implements Runnable {
     Text uptime = (Text) root.lookup("#uptimeValue");
     Text trades = (Text) root.lookup("#tradesValue");
     Text status = (Text) root.lookup("#currentStatusValue");
+    Text sTrades = (Text) root.lookup("#successfulTradesValue");
+    Text fTrades = (Text) root.lookup("#failedTradesValue");
     Text success = (Text) root.lookup("#successRateValue");
     Text toggle = (Text) root.lookup("#toggleButton");
     Text settings = (Text) root.lookup("#settingsButton");
@@ -57,17 +59,23 @@ public class Interfacer extends Application implements Runnable {
     Thread thread = new Thread(() -> {
       while (true) {
       ArrayList<Runnable> updater = new ArrayList<>();
-      Runnable update = () -> currentBalance.setText(String.valueOf(dataHandler.getUSDTBalance()) + " USDT");
+      Runnable update = () -> currentBalance.setText(dataHandler.getUSDTBalance() + " USDT");
       updater.add(update);
-      update = () -> lastTrade.setText(String.valueOf(array.getLastProfit()) + " USDT");
+      update = () -> lastTrade.setText(array.getLastProfit() + " USDT");
       updater.add(update);
       update = () -> uptime.setText(format.format(controller.getUpTime()));
       updater.add(update);
-      update = () -> avgTrade.setText(String.valueOf(array.getAverageProfit()) + " USDT");
+      update = () -> avgTrade.setText(array.getAverageProfit() + " USDT");
       updater.add(update);
-      update = () -> totalProfit.setText(String.valueOf(array.getTotalProfit()) + " USDT");
+      update = () -> totalProfit.setText(array.getTotalProfit() + " USDT");
       updater.add(update);
       update = () -> trades.setText(String.valueOf(controller.getTrades()));
+      updater.add(update);
+      update = () -> sTrades.setText(String.valueOf(array.getSuccessfulTrades()));
+      updater.add(update);
+      update = () -> fTrades.setText(String.valueOf(controller.getTrades() - array.getSuccessfulTrades()));
+      updater.add(update);
+      update = () -> success.setText(String.valueOf((array.getSuccessfulTrades()  / controller.getTrades()) * 100));
       updater.add(update);
       if(controller.showUI()) {
         update = () -> {
