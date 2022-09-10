@@ -56,17 +56,19 @@ public class RangeSpotter implements Runnable, Observer {
     boolean inRange = false;
     float highSwitch = 0;
     float lowSwitch = 0;
-    while (1 == 1) {
+    while (!Thread.currentThread().isInterrupted()) {
       if (arrayUpdated) {
         shifting.add(array.getMovingAverage(maRange));
         if (shifting.isFilled()) {
           List<Float> averages = shifting.getStandardArray();
           Status status = getStatus(averages);
             if ((status == Bullish) && (averages.get(averages.size() - 1) > array.getMovingAverage(20)))  {
-                  highSwitch = averages.get(averages.size() - 1);
-                  System.out.println("High switch");
-                  Toolkit.getDefaultToolkit().beep();
+              if ((highSwitch == 0) || ((averages.get(averages.size() - 1)) > highSwitch)) {
+                highSwitch = averages.get(averages.size() - 1);
+                System.out.println("High switch");
+                Toolkit.getDefaultToolkit().beep();
                 expiration = 0;
+              }
                 if ((lowSwitch != 0) && (!inRange)) {
                   inRange = true;
                 }
@@ -74,10 +76,12 @@ public class RangeSpotter implements Runnable, Observer {
                   controller.sellSignal();
                 }
             } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
-                  lowSwitch = averages.get(averages.size() - 1);
-                  System.out.println("Low switch");
-                  Toolkit.getDefaultToolkit().beep();
+              if ((lowSwitch == 0) || ((averages.get(averages.size() - 1)) < lowSwitch)) {
+                lowSwitch = averages.get(averages.size() - 1);
+                System.out.println("Low switch");
+                Toolkit.getDefaultToolkit().beep();
                 expiration = 0;
+              }
                 if((highSwitch != 0) && (!inRange)) {
                   inRange = true;
                 }
@@ -107,10 +111,12 @@ public class RangeSpotter implements Runnable, Observer {
         }
       }
     }
+    System.out.println("Stopped.");
   }
 
   @Override
   public void observableUpdated() {
     arrayUpdated = true;
   }
+
 }
