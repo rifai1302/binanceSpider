@@ -9,6 +9,7 @@ public class AverageStopLoss implements Runnable {
     private final SensorArray sensorArray;
     private final Controller controller;
     private final Trade trade;
+    private boolean boundary = false;
 
     public AverageStopLoss(SensorArray sensorArray, Controller controller, Trade trade) {
         this.sensorArray = sensorArray;
@@ -19,7 +20,10 @@ public class AverageStopLoss implements Runnable {
     @Override
     public void run() {
         while (trade.isOpen()) {
-                    if (sensorArray.getMovingAverage(5) < sensorArray.getMovingAverage(20)) {
+            if (!boundary)  {
+                if (sensorArray.getMovingAverage(5) > sensorArray.getMovingAverage(20) + 50)
+                    boundary = true;
+            } else if (sensorArray.getMovingAverage(5) < sensorArray.getMovingAverage(20)) {
                         controller.sellSignal();
                     }
         }
