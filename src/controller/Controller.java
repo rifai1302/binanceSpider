@@ -3,43 +3,38 @@ package controller;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
-import view.Interfacer;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.math.RoundingMode;
-import java.nio.Buffer;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Controller {
 
     private final DataHandler dataHandler;
-    private Watcher watcher;
     private Trade trade;
     private final DecimalFormat format = new DecimalFormat("#.##");
     private int status = 0;
     private LocalDateTime startTime;
     private int trades = 0;
-    private SystemTray tray = SystemTray.getSystemTray();
     private boolean showUI = false;
+    private volatile ArrayList<Runnable> strategists = new ArrayList<>();
+    private volatile ArrayList<Thread> threads = new ArrayList<>();
 
     public Controller (DataHandler dataHandler) {
         this.dataHandler = dataHandler;
         format.setRoundingMode(RoundingMode.FLOOR);
-        RangeSpotter spotter = new RangeSpotter(dataHandler.getSensorArray(), this, 7);
-        Thread thread = new Thread(spotter);
-        thread.start();
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
+        attachStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 7));
         trayIcon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showUI = true;
@@ -52,6 +47,7 @@ public class Controller {
         });
 
         try {
+            SystemTray tray = SystemTray.getSystemTray();
             tray.add(trayIcon);
         } catch (Exception e)   {
             e.printStackTrace();
@@ -86,29 +82,31 @@ public class Controller {
         return dataHandler.getServerTime();
     }
 
+    public void attachStrategist(Runnable strategist)   {
+        strategists.add(strategist);
+    }
+
     public boolean showUI() {
         return showUI;
     }
 
     public void start() {
-        if (watcher == null) {
+        for (Runnable runnable: strategists)    {
+            Thread thread = new Thread(runnable);
+            threads.add(thread);
+            thread.start();
+        }
             status = 3;
             Toolkit.getDefaultToolkit().beep();
-            watcher = new Watcher(dataHandler.getSensorArray(), this);
-            final Thread watcherThread = new Thread(watcher);
-            watcherThread.start();
             status = 1;
             startTime = LocalDateTime.now();
-        }
     }
 
     public void stop() {
-        try {
-            watcher.stop();
-            status = 0;
-        } catch (Exception e)    {
-            //interfacer.notStarted();
+        for (Thread thread: threads)    {
+            thread.interrupt();
         }
+        status = 0;
         startTime = null;
     }
 
@@ -135,6 +133,7 @@ public class Controller {
                 e.printStackTrace();
             }*/
             System.out.println("Open signal.");
+            status = 2;
         }
     }
 
@@ -148,13 +147,14 @@ public class Controller {
                 e.printStackTrace();
             }*/
         }
+        status = 1;
         System.out.println("Close signal.");
+        trades++;
     }
 
     public void tradeClosed()   {
         //interfacer.tradeClosed(tradeIndex);
         trade = null;
-        watcher.pause();
     }
 
     public int getStatus() {
