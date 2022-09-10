@@ -13,7 +13,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Controller {
 
@@ -65,22 +64,6 @@ public class Controller {
             com.execute(this);
         } catch (Exception e) {
         }
-    }
-
-    public float getLatestPrice() {
-        return dataHandler.getLatestPrice();
-    }
-
-    public float getUSDTBalance() {
-        return Float.parseFloat(format.format(dataHandler.getUSDTBalance()));
-    }
-
-    public float getBTCBalance() {
-        return dataHandler.getBTCBalance();
-    }
-
-    public Date getServerTime() {
-        return dataHandler.getServerTime();
     }
 
     public void attachStrategist(Runnable strategist)   {
