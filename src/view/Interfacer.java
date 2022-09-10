@@ -75,8 +75,13 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> fTrades.setText(String.valueOf(controller.getTrades() - array.getSuccessfulTrades()));
       updater.add(update);
-      update = () -> success.setText(String.valueOf((array.getSuccessfulTrades()  / controller.getTrades()) * 100));
-      updater.add(update);
+      try {
+        update = () -> success.setText(String.valueOf((array.getSuccessfulTrades() / controller.getTrades()) * 100));
+        updater.add(update);
+      } catch (Exception e) {
+        update = () -> success.setText("0");
+        updater.add(update);
+      }
       if(controller.showUI()) {
         update = () -> {
           primaryStage.setScene(scene);
