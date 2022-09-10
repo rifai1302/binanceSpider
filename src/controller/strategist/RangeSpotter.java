@@ -67,8 +67,8 @@ public class RangeSpotter implements Runnable, Observer {
                 highSwitch = averages.get(averages.size() - 1);
                 System.out.println("High switch");
                 Toolkit.getDefaultToolkit().beep();
-                expiration = 0;
               }
+              expiration = 0;
                 if ((lowSwitch != 0) && (!inRange)) {
                   inRange = true;
                 }
@@ -80,8 +80,8 @@ public class RangeSpotter implements Runnable, Observer {
                 lowSwitch = averages.get(averages.size() - 1);
                 System.out.println("Low switch");
                 Toolkit.getDefaultToolkit().beep();
-                expiration = 0;
               }
+              expiration = 0;
                 if((highSwitch != 0) && (!inRange)) {
                   inRange = true;
                 }
