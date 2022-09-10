@@ -86,8 +86,8 @@ public class RangeSpotter implements Runnable, Observer {
                   inRange = true;
                 }
                 if (inRange)  {
-                  if ((highSwitch - lowSwitch < 50) || (((highSwitch - averages.get(averages.size() - 1)) < 50)
-                          || ((averages.get(averages.size() - 1) - lowSwitch) < 50)))  {
+                  if ((highSwitch - lowSwitch < 50) || (((highSwitch - averages.get(averages.size() - 1)) < 25)
+                          || ((averages.get(averages.size() - 1) - lowSwitch) < 25)))  {
                     inRange = false;
                     shifting = new ShiftingArray<>(5);
                     highSwitch = 0;

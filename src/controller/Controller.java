@@ -33,17 +33,18 @@ public class Controller {
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
+        MenuItem item = new MenuItem();
+        item.setLabel("Inchide");
+        popup.add(item);
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
-        attachStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 7));
-        trayIcon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showUI = true;
-                try {
-                    Thread.sleep(550);
-                } catch (Exception h)   {
-                }
-                showUI = false;
+        attachStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
+        trayIcon.addActionListener(e -> {
+            showUI = true;
+            try {
+                Thread.sleep(550);
+            } catch (Exception h)   {
             }
+            showUI = false;
         });
 
         try {
