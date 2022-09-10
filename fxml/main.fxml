@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="950.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="611.0" prefWidth="950.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="223.0" layoutX="31.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
          <effect>
@@ -169,12 +169,7 @@
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="toggleButton" fill="WHITE" fontSmoothingType="LCD" layoutX="576.0" layoutY="530.0" onMouseClicked="#onToggleButtonClicked" onMouseEntered="#onToggleButtonEntered" onMouseExited="#onToggleButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Porneste" textAlignment="CENTER" wrappingWidth="310.3839569091796">
-         <font>
-            <Font name="Bauhaus 93" size="49.0" />
-         </font>
-      </Text>
-      <Text fx:id="settingsButton" fill="WHITE" fontSmoothingType="LCD" layoutX="587.0" layoutY="599.0" onMouseClicked="#onSettingsButtonClicked" onMouseEntered="#onSettingsButtonEntered" onMouseExited="#onSettingsButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Setari" textAlignment="CENTER" wrappingWidth="284.147979736328">
+      <Text fx:id="toggleButton" fill="WHITE" fontSmoothingType="LCD" layoutX="576.0" layoutY="554.0" onMouseClicked="#onToggleButtonClicked" onMouseEntered="#onToggleButtonEntered" onMouseExited="#onToggleButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Porneste" textAlignment="CENTER" wrappingWidth="310.3839569091796">
          <font>
             <Font name="Bauhaus 93" size="49.0" />
          </font>

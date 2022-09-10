@@ -172,19 +172,5 @@ public class Interfacer extends Application implements Runnable {
       controller.parseCommand("Stop");
   }
 
-  public void onSettingsButtonEntered(MouseEvent event) {
-    event.consume();
-    Glow glow = new Glow();
-    glow.setLevel(1.0);
-    ((Node) event.getSource()).setEffect(glow);
-  }
-
-  public void onSettingsButtonExited(MouseEvent event) {
-    ((Node) event.getSource()).setEffect(null);
-  }
-
-  public void onSettingsButtonClicked(MouseEvent event) {
-  }
-
 
 }
