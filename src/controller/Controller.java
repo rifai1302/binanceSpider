@@ -115,7 +115,7 @@ public class Controller {
 
     public void buySignal() {
         if (trade == null) {
-            /*Toolkit.getDefaultToolkit().beep();
+            Toolkit.getDefaultToolkit().beep();
             trade = new Trade(dataHandler, dataHandler.getUSDTBalance());
             try {
                 trade.open();
@@ -127,7 +127,7 @@ public class Controller {
                 Thread.sleep(5000);
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
             System.out.println("Open signal.");
             status = 2;
         }
@@ -135,13 +135,13 @@ public class Controller {
 
     public void sellSignal()    {
         if(trade != null)   {
-            /*try {
+            try {
                 trade.close();
                 tradeClosed();
                 trades++;
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
         }
         status = 1;
         System.out.println("Close signal.");
@@ -149,7 +149,6 @@ public class Controller {
     }
 
     public void tradeClosed()   {
-        //interfacer.tradeClosed(tradeIndex);
         trade = null;
     }
 
