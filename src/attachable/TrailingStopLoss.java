@@ -1,7 +1,6 @@
 package attachable;
 
 import controller.Controller;
-import controller.Trade;
 import model.SensorArray;
 
 public class TrailingStopLoss extends Attachable implements Runnable {

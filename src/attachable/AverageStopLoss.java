@@ -1,6 +1,5 @@
 package attachable;
 
-import controller.Trade;
 import controller.Controller;
 import model.SensorArray;
 
