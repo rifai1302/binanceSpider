@@ -1,20 +1,19 @@
-package controller.strategist;
+package attachable;
 
 import controller.Controller;
 import controller.Trade;
 import model.SensorArray;
 
-public class TrailingStopLoss implements Runnable {
+public class TrailingStopLoss extends Attachable implements Runnable {
 
     private final SensorArray array;
-    private final Trade trade;
     private final Controller controller;
 
 
     public TrailingStopLoss(SensorArray array, Controller controller, Trade trade)    {
+        super(trade);
         this.array = array;
         this.controller = controller;
-        this.trade = trade;
     }
 
     @Override
