@@ -74,6 +74,7 @@ public class RangeSpotter implements Runnable, Observer {
                 }
                 if (inRange)  {
                   controller.sellSignal();
+                  System.out.println("sellSignal");
                 }
             } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
               if ((lowSwitch == 0) || ((averages.get(averages.size() - 1)) < lowSwitch)) {
@@ -86,14 +87,13 @@ public class RangeSpotter implements Runnable, Observer {
                   inRange = true;
                 }
                 if (inRange)  {
-                  if ((highSwitch - lowSwitch < 50) || (((highSwitch - averages.get(averages.size() - 1)) < 25)
-                          || ((averages.get(averages.size() - 1) - lowSwitch) < 25)))  {
+                  if ((highSwitch != 0) && (highSwitch - lowSwitch) < 20) {
                     inRange = false;
-                    shifting = new ShiftingArray<>(5);
                     highSwitch = 0;
                     lowSwitch = 0;
                   } else {
                     controller.buySignal();
+                    System.out.println("buySignal");
                   }
                 }
               }
@@ -101,7 +101,7 @@ public class RangeSpotter implements Runnable, Observer {
         arrayUpdated = false;
         if ((highSwitch != 0) || (lowSwitch != 0))
         expiration++;
-
+        System.out.println("Expiration: " + expiration);
         if (expiration >= 60) {
           inRange = false;
           shifting = new ShiftingArray<>(5);
