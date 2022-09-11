@@ -2,11 +2,12 @@ package attachable;
 
 import controller.Trade;
 
-public abstract class Attachable {
+public abstract class Attachable implements Runnable {
 
-  protected final Trade trade;
+  protected Trade trade;
 
-  public Attachable (Trade trade) {
+  public void attachToTrade(Trade trade)  {
     this.trade = trade;
   }
+
 }

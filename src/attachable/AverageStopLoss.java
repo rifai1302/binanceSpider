@@ -10,8 +10,7 @@ public class AverageStopLoss extends Attachable implements Runnable {
     private final Controller controller;
     private boolean boundary = false;
 
-    public AverageStopLoss(SensorArray sensorArray, Controller controller, Trade trade) {
-        super(trade);
+    public AverageStopLoss(SensorArray sensorArray, Controller controller) {
         this.sensorArray = sensorArray;
         this.controller = controller;
     }

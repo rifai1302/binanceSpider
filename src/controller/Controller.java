@@ -1,11 +1,11 @@
 package controller;
 
+import attachable.Attachable;
+import attachable.AverageStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.math.RoundingMode;
@@ -25,6 +25,7 @@ public class Controller {
     private boolean showUI = false;
     private volatile ArrayList<Runnable> strategists = new ArrayList<>();
     private volatile ArrayList<Thread> threads = new ArrayList<>();
+    private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
     public Controller (DataHandler dataHandler) {
         this.dataHandler = dataHandler;
@@ -36,7 +37,10 @@ public class Controller {
         item.setLabel("Inchide");
         popup.add(item);
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
-        attachStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
+
+        addStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
+        addAttachable(new AverageStopLoss(dataHandler.getSensorArray(), this));
+
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
@@ -66,8 +70,12 @@ public class Controller {
         }
     }
 
-    public void attachStrategist(Runnable strategist)   {
+    public void addStrategist(Runnable strategist)   {
         strategists.add(strategist);
+    }
+
+    public void addAttachable(Attachable attachable)    {
+        attachables.add(attachable);
     }
 
     public boolean showUI() {
@@ -111,7 +119,11 @@ public class Controller {
             trade = new Trade(dataHandler, dataHandler.getUSDTBalance());
             try {
                 trade.open();
-                interfacer.tradeOpened(tradeIndex);
+                for (Attachable attachable: attachables)    {
+                    attachable.attachToTrade(trade);
+                    Thread thread = new Thread(attachable);
+                    thread.start();
+                }
                 Thread.sleep(5000);
             } catch (Exception e) {
                 e.printStackTrace();

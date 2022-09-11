@@ -10,8 +10,7 @@ public class TrailingStopLoss extends Attachable implements Runnable {
     private final Controller controller;
 
 
-    public TrailingStopLoss(SensorArray array, Controller controller, Trade trade)    {
-        super(trade);
+    public TrailingStopLoss(SensorArray array, Controller controller)    {
         this.array = array;
         this.controller = controller;
     }
