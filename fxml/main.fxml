@@ -160,9 +160,9 @@
             <Image url="@logo.png" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2b2b2b" height="184.0" layoutX="534.0" layoutY="448.0" stroke="WHITE" strokeType="INSIDE" width="367.0" />
-      <TextField fx:id="consoleInput" layoutX="534.0" layoutY="632.0" onKeyPressed="#inputKeyPressed" prefHeight="25.0" prefWidth="367.0" />
-      <Text fx:id="consoleOutput" fill="WHITE" layoutX="545.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="345.0749511718749">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2b2b2b" height="184.0" layoutX="534.0" layoutY="448.0" stroke="WHITE" strokeType="INSIDE" width="392.0" />
+      <TextField fx:id="consoleInput" layoutX="534.0" layoutY="632.0" onKeyPressed="#inputKeyPressed" prefHeight="25.0" prefWidth="392.0" />
+      <Text fx:id="consoleOutput" fill="WHITE" layoutX="546.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="373.0749511718749">
          <font>
             <Font size="15.0" />
          </font>
