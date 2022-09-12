@@ -145,7 +145,6 @@ public class Controller {
         }
         status = 1;
         System.out.println("Close signal.");
-        trades++;
     }
 
     public void tradeClosed()   {
