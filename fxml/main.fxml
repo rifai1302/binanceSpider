@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -160,9 +159,6 @@
          <image>
             <Image url="@logo.png" />
          </image>
-         <effect>
-            <Bloom threshold="0.23" />
-         </effect>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2b2b2b" height="184.0" layoutX="534.0" layoutY="448.0" stroke="WHITE" strokeType="INSIDE" width="367.0" />
       <TextField fx:id="consoleInput" layoutX="534.0" layoutY="632.0" onKeyPressed="#inputKeyPressed" prefHeight="25.0" prefWidth="367.0" />

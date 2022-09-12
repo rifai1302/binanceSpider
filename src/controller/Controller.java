@@ -5,6 +5,8 @@ import attachable.AverageStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
+import view.Interfacer;
+
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -37,10 +39,8 @@ public class Controller {
         item.setLabel("Inchide");
         popup.add(item);
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
-
         addStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
         addAttachable(new AverageStopLoss(dataHandler.getSensorArray(), this));
-
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
@@ -59,7 +59,7 @@ public class Controller {
 
     }
 
-    public void parseCommand(String command) {
+    public boolean parseCommand(String command) {
         try {
             ClassLoader loader = Command.class.getClassLoader();
             Class<?> driver = Class.forName("controller.commands." + command, true, loader);
@@ -67,7 +67,9 @@ public class Controller {
             Command com = (Command)  commandConstructor.newInstance();
             com.execute(this);
         } catch (Exception e) {
+            return false;
         }
+        return true;
     }
 
     public void addStrategist(Runnable strategist)   {
