@@ -7,7 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -52,8 +56,7 @@ public class Interfacer extends Application implements Runnable {
     Text sTrades = (Text) root.lookup("#successfulTradesValue");
     Text fTrades = (Text) root.lookup("#failedTradesValue");
     Text success = (Text) root.lookup("#successRateValue");
-    Text toggle = (Text) root.lookup("#toggleButton");
-    Text settings = (Text) root.lookup("#settingsButton");
+    ImageView logo = (ImageView) root.lookup("#spiderLogo");
     primaryStage.setTitle("Păgangănul de Bitcoaie");
     SensorArray array = dataHandler.getSensorArray();
     Thread thread = new Thread(() -> {
@@ -94,15 +97,11 @@ public class Interfacer extends Application implements Runnable {
           updater.add(update);
           update = () -> status.setStyle("-fx-text-fill: red;");
           updater.add(update);
-          update = () -> toggle.setText("Porneste");
-          updater.add(update);
         }
         case 1 -> {
           update = () -> status.setText("Activ");
           updater.add(update);
           update = () -> status.setStyle("-fx-text-fill: blue;");
-          updater.add(update);
-          update = () -> toggle.setText("Opreste");
           updater.add(update);
         }
         case 2 -> {
@@ -148,28 +147,30 @@ public class Interfacer extends Application implements Runnable {
   public void onLogoMouseExited(MouseEvent event) {
     event.consume();
     ((Node) event.getSource()).setEffect(null);
+    if (controller.getStatus() == 1)  {
+      Bloom bloom = new Bloom();
+      bloom.setThreshold(0.23);
+      ((Node) event.getSource()).setEffect(bloom);
+    } else {
+      ((Node) event.getSource()).setEffect(null);
+    }
   }
 
-  public void onLogoMouseClicked(MouseEvent event){
-
-  }
-
-  public void onToggleButtonEntered(MouseEvent event) {
-    event.consume();
-    Glow glow = new Glow();
-    glow.setLevel(1.0);
-    ((Node) event.getSource()).setEffect(glow);
-  }
-
-  public void onToggleButtonExited(MouseEvent event) {
-    ((Node) event.getSource()).setEffect(null);
-  }
-
-  public void onToggleButtonClicked(MouseEvent event) {
-    if (controller.getStatus() == 0)
+  public void onLogoMouseClicked(MouseEvent event)  {
+    if (controller.getStatus() == 0) {
       controller.parseCommand("Begin");
-    else if (controller.getStatus() == 1)
+      Bloom bloom = new Bloom();
+      bloom.setThreshold(0.23);
+      ((Node) event.getSource()).setEffect(bloom);
+    }
+    else if (controller.getStatus() == 1) {
       controller.parseCommand("Stop");
+      ((Node) event.getSource()).setEffect(null);
+    }
+  }
+
+  public void inputKeyPressed(KeyEvent event) {
+
   }
 
 

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="611.0" prefWidth="950.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="950.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="223.0" layoutX="31.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
          <effect>
@@ -25,7 +27,7 @@
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="221.0" layoutX="536.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="182.0" layoutX="535.0" layoutY="92.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="392.0">
          <effect>
             <Glow level="1.0" />
          </effect>
@@ -154,24 +156,19 @@
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <ImageView fx:id="spiderLogo" fitHeight="125.0" fitWidth="191.0" layoutX="652.0" layoutY="340.0" onMouseClicked="#onLogoMouseClicked" onMouseEntered="#onLogoMouseEntered" onMouseExited="#onLogoMouseExited" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="spiderLogo" fitHeight="117.0" fitWidth="133.0" layoutX="666.0" layoutY="311.0" onMouseClicked="#onLogoMouseClicked" onMouseEntered="#onLogoMouseEntered" onMouseExited="#onLogoMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@logo.png" />
          </image>
+         <effect>
+            <Bloom threshold="0.23" />
+         </effect>
       </ImageView>
-      <Text fx:id="cpuUsage" boundsType="VISUAL" fill="WHITE" layoutX="560.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Utilizarea CPU-ului:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2b2b2b" height="184.0" layoutX="534.0" layoutY="448.0" stroke="WHITE" strokeType="INSIDE" width="367.0" />
+      <TextField fx:id="consoleInput" layoutX="534.0" layoutY="632.0" onKeyPressed="#inputKeyPressed" prefHeight="25.0" prefWidth="367.0" />
+      <Text fx:id="consoleOutput" fill="WHITE" layoutX="545.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="345.0749511718749">
          <font>
-            <Font name="ArtifaktElement-Medium" size="27.0" />
-         </font>
-      </Text>
-      <Text fx:id="cpuUsageValue" fill="#00ccff" fontSmoothingType="LCD" layoutX="820.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0%" wrappingWidth="72.77497482299805">
-         <font>
-            <Font name="ArtifaktElement-Regular" size="25.0" />
-         </font>
-      </Text>
-      <Text fx:id="toggleButton" fill="WHITE" fontSmoothingType="LCD" layoutX="576.0" layoutY="554.0" onMouseClicked="#onToggleButtonClicked" onMouseEntered="#onToggleButtonEntered" onMouseExited="#onToggleButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Porneste" textAlignment="CENTER" wrappingWidth="310.3839569091796">
-         <font>
-            <Font name="Bauhaus 93" size="49.0" />
+            <Font size="15.0" />
          </font>
       </Text>
    </children>
