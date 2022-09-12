@@ -19,10 +19,9 @@ public class DataHandler {
     public DataHandler(BinanceApiRestClient client) {
         this.client = client;
         account = client.getAccount();
-        sensorArray = new SensorArray(client, account, 60000);
+        sensorArray = new SensorArray(client, account, 45000);
         arrayThread = new Thread(sensorArray);
         arrayThread.start();
-        updateConstants();
     }
 
     public SensorArray getSensorArray() {
@@ -51,21 +50,5 @@ public class DataHandler {
 
     public BinanceApiRestClient getClient()    {
         return client;
-    }
-
-    public void updateConstants()    {
-        try {
-            File file = new File("constants.dat");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null)  {
-                if (line.contains("triggerMomentum"))   {
-                    String[] splitter = line.split(":");
-                    Constants.triggerMomentum = Float.parseFloat(splitter[1]);
-                }
-            }
-        } catch (Exception e)   {
-            e.printStackTrace();
-        }
     }
 }

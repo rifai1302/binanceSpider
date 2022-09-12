@@ -104,11 +104,6 @@ public class Controller {
         startTime = null;
     }
 
-    public void updateConstants()   {
-        dataHandler.updateConstants();
-        Interfacer.consolePrint("Constantele au fost reîncărcate.");
-    }
-
     public int getUpTime()  {
         if (startTime == null)
             return 0;
