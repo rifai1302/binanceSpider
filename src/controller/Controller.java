@@ -45,7 +45,7 @@ public class Controller {
             showUI = true;
             try {
                 Thread.sleep(550);
-            } catch (Exception h)   {
+            } catch (Exception ignored)   {
             }
             showUI = false;
         });
@@ -66,10 +66,10 @@ public class Controller {
             Constructor<?> commandConstructor = driver.getConstructor();
             Command com = (Command)  commandConstructor.newInstance();
             com.execute(this);
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     public void addStrategist(Runnable strategist)   {
@@ -106,7 +106,7 @@ public class Controller {
 
     public void updateConstants()   {
         dataHandler.updateConstants();
-        //interfacer.constantsUpdated();
+        Interfacer.consolePrint("Constantele au fost reîncărcate.");
     }
 
     public int getUpTime()  {
