@@ -13,7 +13,6 @@ public class DataHandler {
     private final BinanceApiRestClient client;
     private final Account account;
     private final SensorArray sensorArray;
-    private final DecimalFormat stableFormat = new DecimalFormat("0.00");
     private final Thread arrayThread;
 
     public DataHandler(BinanceApiRestClient client) {
@@ -33,7 +32,7 @@ public class DataHandler {
     }
 
     public float getUSDTBalance()   {
-        return (stableFormat(account.getAssetBalance("USDT").getFree()));
+        return (float) ((float)Math.round(Float.parseFloat(account.getAssetBalance("USDT").getFree()) * 100.0) / 100.0);
     }
 
     public float getBTCBalance() {
@@ -44,9 +43,6 @@ public class DataHandler {
         return new Date(Long.parseLong(String.valueOf(client.getServerTime())));
     }
 
-    private float stableFormat(String f) {
-        return Float.parseFloat(stableFormat.format(Float.valueOf(f)));
-    }
 
     public BinanceApiRestClient getClient()    {
         return client;
