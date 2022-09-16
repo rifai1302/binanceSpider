@@ -19,7 +19,6 @@ public class SensorArray implements Runnable, Observable {
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
     private volatile int interval;
-    private final DecimalFormat stableFormat = new DecimalFormat("0.00");
     private volatile ArrayList<Float> balanceHistory = new ArrayList<>();
 
     public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
@@ -74,11 +73,7 @@ public class SensorArray implements Runnable, Observable {
     }
 
     public float getUSDTBalance()   {
-        return (stableFormat(account.getAssetBalance("USDT").getFree()));
-    }
-
-    private float stableFormat(String f) {
-        return Float.parseFloat(stableFormat.format(Float.valueOf(f)));
+        return (float) ((float)Math.round(Float.parseFloat(account.getAssetBalance("USDT").getFree()) * 100.0) / 100.0);
     }
 
     public Candlestick getLastCandlestick() {
