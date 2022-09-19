@@ -4,6 +4,7 @@ import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
+import javafx.scene.chart.XYChart;
 import observable.Observer;
 import observable.Observable;
 import java.text.DecimalFormat;
@@ -20,12 +21,20 @@ public class SensorArray implements Runnable, Observable {
     private volatile Candlestick lastUpdate;
     private volatile int interval;
     private volatile ArrayList<Float> balanceHistory = new ArrayList<>();
+    private volatile XYChart.Series chartData;
 
     public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
         this.client = client;
         this.account = account;
         candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
         this.interval = interval;
+    }
+
+
+    public XYChart.Series getData()   {
+        XYChart.Series returner = chartData;
+        chartData = null;
+        return returner;
     }
 
     public float getLastProfit()    {
@@ -102,13 +111,16 @@ public class SensorArray implements Runnable, Observable {
     @Override
     public void run()   {
         LocalDateTime prevTime = LocalDateTime.now();
-        lastUpdate = getLastCandlestick();
+        int index = 0;
         while(!Thread.currentThread().isInterrupted()) {
             if (ChronoUnit.MILLIS.between(prevTime, LocalDateTime.now()) >= interval) {
                 candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
                 prevTime = LocalDateTime.now();
                 updateObservers();
-                lastUpdate = candlesticks.get(0);
+                lastUpdate = candlesticks.get(candlesticks.size() - 1);
+                chartData = new XYChart.Series();
+                chartData.getData().add(new XYChart.Data(index, Float.parseFloat(lastUpdate.getClose())));
+                index++;
                 if ((getUSDTBalance() > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
                     balanceHistory.add(getUSDTBalance());
                 }

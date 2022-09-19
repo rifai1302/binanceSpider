@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.javafx.scene.control.skin.Utils;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
@@ -24,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Interfacer extends Application implements Runnable {
@@ -61,6 +66,14 @@ public class Interfacer extends Application implements Runnable {
     Text fTrades = (Text) root.lookup("#failedTradesValue");
     Text success = (Text) root.lookup("#successRateValue");
     Text console = (Text) root.lookup("#consoleOutput");
+    LineChart chart = (LineChart) root.lookup("#bitChart");
+    NumberAxis xAxis = (NumberAxis) root.lookup("#xAxis");
+    NumberAxis yAxis = (NumberAxis) root.lookup("#yAxis");
+    xAxis.setAutoRanging(false);
+    yAxis.setAutoRanging(false);
+    xAxis.setLowerBound(0);
+    xAxis.setUpperBound(30);
+    yAxis.setTickUnit(500);
     primaryStage.setTitle("Păgangănul de Bitcoaie");
     SensorArray array = dataHandler.getSensorArray();
     consolePrint("Consolă inițializată");
@@ -69,6 +82,14 @@ public class Interfacer extends Application implements Runnable {
       ArrayList<Runnable> updater = new ArrayList<>();
       Runnable update = () -> currentBalance.setText(dataHandler.getUSDTBalance() + " USDT");
       updater.add(update);
+      XYChart.Series data = array.getData();
+      if (data != null) {
+        float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
+        yAxis.setUpperBound(price + 1000);
+        yAxis.setLowerBound(price - 1000);
+        update = () -> chart.getData().add(data);
+        updater.add(update);
+      }
       update = () -> lastTrade.setText(array.getLastProfit() + " USDT");
       updater.add(update);
       update = () -> uptime.setText(format.format(controller.getUpTime()));
