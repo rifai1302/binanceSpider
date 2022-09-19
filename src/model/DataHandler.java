@@ -3,6 +3,7 @@ package model;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
 import controller.Trade;
+import javafx.scene.chart.XYChart;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -42,7 +43,6 @@ public class DataHandler {
     public Date getServerTime()  {
         return new Date(Long.parseLong(String.valueOf(client.getServerTime())));
     }
-
 
     public BinanceApiRestClient getClient()    {
         return client;
