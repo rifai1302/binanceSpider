@@ -2,9 +2,13 @@ package controller;
 
 import attachable.Attachable;
 import attachable.AverageStopLoss;
+import attachable.ConnectionFailsafe;
+import attachable.TrailingStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
+import view.Interfacer;
+
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -37,15 +41,14 @@ public class Controller {
         item.setLabel("Inchide");
         popup.add(item);
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
-
         addStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
         addAttachable(new AverageStopLoss(dataHandler.getSensorArray(), this));
-
+        addAttachable(new TrailingStopLoss(dataHandler.getSensorArray(), this));
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
                 Thread.sleep(550);
-            } catch (Exception h)   {
+            } catch (Exception ignored)   {
             }
             showUI = false;
         });
@@ -59,14 +62,16 @@ public class Controller {
 
     }
 
-    public void parseCommand(String command) {
+    public boolean parseCommand(String command) {
         try {
             ClassLoader loader = Command.class.getClassLoader();
             Class<?> driver = Class.forName("controller.commands." + command, true, loader);
             Constructor<?> commandConstructor = driver.getConstructor();
             Command com = (Command)  commandConstructor.newInstance();
             com.execute(this);
+            return true;
         } catch (Exception e) {
+            return false;
         }
     }
 
@@ -100,11 +105,6 @@ public class Controller {
         }
         status = 0;
         startTime = null;
-    }
-
-    public void updateConstants()   {
-        dataHandler.updateConstants();
-        //interfacer.constantsUpdated();
     }
 
     public int getUpTime()  {
@@ -145,7 +145,6 @@ public class Controller {
         }
         status = 1;
         System.out.println("Close signal.");
-        trades++;
     }
 
     public void tradeClosed()   {

@@ -69,11 +69,17 @@ public class RangeSpotter implements Runnable, Observer {
                 Toolkit.getDefaultToolkit().beep();
               }
               expiration = 0;
-                if ((lowSwitch != 0) && (!inRange)) {
+                if ((lowSwitch != 0) && (!inRange) && ((highSwitch - lowSwitch) > 20)) {
                   inRange = true;
                 }
                 if (inRange)  {
-                  controller.sellSignal();
+                  System.out.println("sellSignal");
+                  //controller.sellSignal();
+                  if ((highSwitch - lowSwitch) > 20)  {
+                    highSwitch = 0;
+                    lowSwitch = 0;
+                    inRange = false;
+                  }
                 }
             } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
               if ((lowSwitch == 0) || ((averages.get(averages.size() - 1)) < lowSwitch)) {
@@ -82,18 +88,12 @@ public class RangeSpotter implements Runnable, Observer {
                 Toolkit.getDefaultToolkit().beep();
               }
               expiration = 0;
-                if((highSwitch != 0) && (!inRange)) {
+                if((highSwitch != 0) && (!inRange) && ((highSwitch - lowSwitch) > 20)) {
                   inRange = true;
                 }
-                if (inRange)  {
-                  if ((highSwitch != 0) && (highSwitch - lowSwitch) < 20) {
-                    inRange = false;
-                    highSwitch = 0;
-                    lowSwitch = 0;
-                  } else {
-                    controller.buySignal();
-                    System.out.println("buySignal");
-                  }
+                if (inRange && ((highSwitch - lowSwitch) > 20))  {
+                  //controller.buySignal();
+                  System.out.println("buySignal");
                 }
               }
         }

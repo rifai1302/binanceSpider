@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="611.0" prefWidth="950.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1350.0" styleClass="pane" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Interfacer">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="223.0" layoutX="31.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
          <effect>
@@ -25,7 +28,7 @@
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="221.0" layoutX="536.0" layoutY="93.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="390.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c1c1c00" height="182.0" layoutX="472.0" layoutY="117.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="392.0">
          <effect>
             <Glow level="1.0" />
          </effect>
@@ -68,7 +71,7 @@
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="technicalText" boundsType="VISUAL" fill="WHITE" layoutX="610.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Informatii tehnice">
+      <Text fx:id="technicalText" boundsType="VISUAL" fill="WHITE" layoutX="547.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Informatii tehnice">
          <font>
             <Font name="ArtifaktElement-Black" size="27.0" />
          </font>
@@ -76,22 +79,22 @@
             <Glow level="0.47" />
          </effect>
       </Text>
-      <Text fx:id="uptime" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Timp de rulare:">
+      <Text fx:id="uptime" boundsType="VISUAL" fill="WHITE" layoutX="498.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Timp de rulare:">
          <font>
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="uptimeValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="763.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 s" wrappingWidth="201.47398376464844">
+      <Text fx:id="uptimeValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="700.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 s" wrappingWidth="201.47398376464844">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="trades" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Trade-uri efectuate:">
+      <Text fx:id="trades" boundsType="VISUAL" fill="WHITE" layoutX="498.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Trade-uri efectuate:">
          <font>
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="tradesValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="828.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="41.47503662109375">
+      <Text fx:id="tradesValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="765.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0" wrappingWidth="41.47503662109375">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -101,12 +104,12 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="currentStatus" boundsType="VISUAL" fill="WHITE" layoutX="561.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Statusul curent:">
+      <Text fx:id="currentStatus" boundsType="VISUAL" fill="WHITE" layoutX="498.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Statusul curent:">
          <font>
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="778.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
+      <Text fx:id="currentStatusValue" boundsType="VISUAL" fill="#94f8ff" fontSmoothingType="LCD" layoutX="715.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Oprit">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
@@ -116,7 +119,7 @@
             <Glow level="1.0" />
          </effect>
       </Rectangle>
-      <Text fx:id="performanceText" boundsType="VISUAL" fill="WHITE" layoutX="81.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Indici de performanta">
+      <Text fx:id="performanceText" boundsType="VISUAL" fill="WHITE" layoutX="75.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Indici de performanta">
          <font>
             <Font name="ArtifaktElement-Black" size="27.0" />
          </font>
@@ -154,25 +157,25 @@
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
       </Text>
-      <ImageView fx:id="spiderLogo" fitHeight="125.0" fitWidth="191.0" layoutX="652.0" layoutY="340.0" onMouseClicked="#onLogoMouseClicked" onMouseEntered="#onLogoMouseEntered" onMouseExited="#onLogoMouseExited" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="spiderLogo" fitHeight="202.0" fitWidth="284.0" layoutX="541.0" layoutY="392.0" onMouseClicked="#onLogoMouseClicked" onMouseEntered="#onLogoMouseEntered" onMouseExited="#onLogoMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@logo.png" />
          </image>
       </ImageView>
-      <Text fx:id="cpuUsage" boundsType="VISUAL" fill="WHITE" layoutX="560.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Utilizarea CPU-ului:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2b2b2b" height="184.0" layoutX="932.0" layoutY="55.0" stroke="WHITE" strokeType="INSIDE" width="392.0" />
+      <TextField fx:id="consoleInput" layoutX="932.0" layoutY="239.0" onKeyPressed="#inputKeyPressed" prefHeight="25.0" prefWidth="392.0" />
+      <Text fx:id="consoleOutput" fill="WHITE" layoutX="944.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="373.0749511718749">
          <font>
-            <Font name="ArtifaktElement-Medium" size="27.0" />
+            <Font size="15.0" />
          </font>
       </Text>
-      <Text fx:id="cpuUsageValue" fill="#00ccff" fontSmoothingType="LCD" layoutX="820.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0%" wrappingWidth="72.77497482299805">
-         <font>
-            <Font name="ArtifaktElement-Regular" size="25.0" />
-         </font>
-      </Text>
-      <Text fx:id="toggleButton" fill="WHITE" fontSmoothingType="LCD" layoutX="576.0" layoutY="554.0" onMouseClicked="#onToggleButtonClicked" onMouseEntered="#onToggleButtonEntered" onMouseExited="#onToggleButtonExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Porneste" textAlignment="CENTER" wrappingWidth="310.3839569091796">
-         <font>
-            <Font name="Bauhaus 93" size="49.0" />
-         </font>
-      </Text>
+      <LineChart fx:id="bitChart" horizontalZeroLineVisible="false" layoutX="890.0" layoutY="314.0" legendVisible="false" prefHeight="357.0" prefWidth="446.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+          <xAxis>
+            <NumberAxis side="BOTTOM" tickLabelsVisible="false" fx:id="xAxis" />
+          </xAxis>
+          <yAxis>
+            <NumberAxis fx:id="yAxis" side="LEFT" />
+          </yAxis>
+      </LineChart>
    </children>
 </Pane>
