@@ -2,6 +2,8 @@ package controller;
 
 import attachable.Attachable;
 import attachable.AverageStopLoss;
+import attachable.ConnectionFailsafe;
+import attachable.TrailingStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
 import model.DataHandler;
@@ -41,6 +43,7 @@ public class Controller {
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
         addStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
         addAttachable(new AverageStopLoss(dataHandler.getSensorArray(), this));
+        addAttachable(new TrailingStopLoss(dataHandler.getSensorArray(), this));
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
