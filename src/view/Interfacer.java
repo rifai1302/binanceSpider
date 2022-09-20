@@ -73,7 +73,7 @@ public class Interfacer extends Application implements Runnable {
     yAxis.setAutoRanging(false);
     xAxis.setLowerBound(0);
     xAxis.setUpperBound(30);
-    yAxis.setTickUnit(83);
+    yAxis.setTickUnit(35);
     primaryStage.setTitle("Păgangănul de Bitcoaie");
     SensorArray array = dataHandler.getSensorArray();
     consolePrint("Consolă inițializată");
@@ -86,8 +86,8 @@ public class Interfacer extends Application implements Runnable {
       if (data != null) {
         int index = Integer.parseInt((data.getData().toString().split(",")[0]).split("\\[")[2]);
         float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
-        yAxis.setUpperBound(price + 250);
-        yAxis.setLowerBound(price - 250);
+        yAxis.setUpperBound(price + 175);
+        yAxis.setLowerBound(price - 175);
         xAxis.setLowerBound(index - 20);
         xAxis.setUpperBound(index + 10);
         update = () -> chart.getData().add(data);

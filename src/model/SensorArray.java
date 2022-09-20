@@ -30,7 +30,6 @@ public class SensorArray implements Runnable, Observable {
         this.interval = interval;
     }
 
-
     public XYChart.Series getData()   {
         XYChart.Series returner = chartData;
         chartData = null;
@@ -119,7 +118,8 @@ public class SensorArray implements Runnable, Observable {
                 updateObservers();
                 lastUpdate = candlesticks.get(candlesticks.size() - 1);
                 chartData = new XYChart.Series();
-                chartData.getData().add(new XYChart.Data(index, Float.parseFloat(lastUpdate.getClose())));
+                Candlestick last = candlesticks.get(candlesticks.size() - 2);
+                chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
                 index++;
                 if ((getUSDTBalance() > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
                     balanceHistory.add(getUSDTBalance());

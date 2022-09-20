@@ -74,7 +74,7 @@ public class RangeSpotter implements Runnable, Observer {
                 }
                 if (inRange)  {
                   System.out.println("sellSignal");
-                  controller.sellSignal();
+                  //controller.sellSignal();
                   if ((highSwitch - lowSwitch) > 20)  {
                     highSwitch = 0;
                     lowSwitch = 0;
@@ -92,7 +92,7 @@ public class RangeSpotter implements Runnable, Observer {
                   inRange = true;
                 }
                 if (inRange && ((highSwitch - lowSwitch) > 20))  {
-                  controller.buySignal();
+                  //controller.buySignal();
                   System.out.println("buySignal");
                 }
               }
