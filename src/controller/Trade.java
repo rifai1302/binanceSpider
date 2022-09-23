@@ -25,13 +25,11 @@ public class Trade {
     private float endPrice = 0;
     private LocalDateTime openTime;
     private float secondsOpen = 0;
-    private final DecimalFormat format = new DecimalFormat("#.#####");
 
     public Trade(DataHandler dataHandler, float usd) {
         this.usd = usd;
         this.dataHandler = dataHandler;
         this.client = dataHandler.getClient();
-        format.setRoundingMode(RoundingMode.FLOOR);
     }
 
     public void open() throws Exception {
@@ -46,7 +44,8 @@ public class Trade {
         }
         float quantity = (usd - (float) 0.5) / dataHandler.getLatestPrice();
         openPrice = dataHandler.getLatestPrice();
-        client.newOrder(marketBuy(Constants.getCurrency(), format.format(quantity)));
+        quantity = (float)(((float)Math.round(dataHandler.getUSDTBalance()) * 100000.0) / 100000.0);
+        client.newOrder(marketBuy(Constants.getCurrency(), String.valueOf(quantity)));
         open = true;
         openTime = LocalDateTime.now();
     }
@@ -58,8 +57,8 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        float temp = Float.parseFloat(client.getAccount().getAssetBalance(Constants.crypto).getFree());
-        client.newOrder(marketSell(Constants.getCurrency(), format.format(temp)));
+        float temp =(float)(((float)Math.round(dataHandler.getBTCBalance()) * 100000.0) / 100000.0);
+        client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
         endPrice = dataHandler.getLatestPrice();
         open = false;
         terminated = true;
