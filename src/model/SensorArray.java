@@ -111,6 +111,7 @@ public class SensorArray implements Runnable, Observable {
     public void run()   {
         LocalDateTime prevTime = LocalDateTime.now();
         int index = 0;
+        balanceHistory.add(getUSDTBalance());
         while(!Thread.currentThread().isInterrupted()) {
             if (ChronoUnit.MILLIS.between(prevTime, LocalDateTime.now()) >= interval) {
                 candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
