@@ -196,7 +196,7 @@ public class Interfacer extends Application implements Runnable {
   public void onLogoMouseExited(MouseEvent event) {
     event.consume();
     ((Node) event.getSource()).setEffect(null);
-    if (controller.getStatus() == 1)  {
+    if ((controller.getStatus() == 1) || (controller.getStatus() == 2))  {
       Bloom bloom = new Bloom();
       bloom.setThreshold(0.23);
       ((Node) event.getSource()).setEffect(bloom);
