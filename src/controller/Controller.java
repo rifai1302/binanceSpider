@@ -119,6 +119,7 @@ public class Controller {
             trade = new Trade(dataHandler, dataHandler.getUSDTBalance());
             try {
                 trade.open();
+                status = 2;
                 for (Attachable attachable: attachables)    {
                     attachable.attachToTrade(trade);
                     Thread thread = new Thread(attachable);
@@ -128,8 +129,7 @@ public class Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Open signal.");
-            status = 2;
+            Interfacer.consolePrint("Open signal.");
         }
     }
 
@@ -139,12 +139,12 @@ public class Controller {
                 trade.close();
                 tradeClosed();
                 trades++;
+                status = 1;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        status = 1;
-        System.out.println("Close signal.");
+        Interfacer.consolePrint("Close signal.");
     }
 
     public void tradeClosed()   {
