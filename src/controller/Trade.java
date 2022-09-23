@@ -44,7 +44,7 @@ public class Trade {
         }
         float quantity = (usd - (float) 0.5) / dataHandler.getLatestPrice();
         openPrice = dataHandler.getLatestPrice();
-        quantity = (float)(((float)Math.round(quantity) * 100000.0) / 100000.0);
+        quantity = (float)((float)Math.round(quantity * 100000.0) / 100000.0);
         client.newOrder(marketBuy(Constants.getCurrency(), String.valueOf(quantity)));
         open = true;
         openTime = LocalDateTime.now();
@@ -57,7 +57,7 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        float temp =(float)(((float)Math.round(dataHandler.getBTCBalance()) * 100000.0) / 100000.0);
+        float temp =(float)((float)Math.round(dataHandler.getBTCBalance() * 100000.0) / 100000.0);
         client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
         endPrice = dataHandler.getLatestPrice();
         open = false;
