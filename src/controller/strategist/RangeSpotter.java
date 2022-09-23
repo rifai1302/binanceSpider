@@ -5,6 +5,8 @@ import model.SensorArray;
 import model.ShiftingArray;
 import observable.Observer;
 import controller.Status;
+import view.Interfacer;
+
 import java.awt.*;
 import java.util.List;
 
@@ -65,7 +67,7 @@ public class RangeSpotter implements Runnable, Observer {
             if ((status == Bullish) && (averages.get(averages.size() - 1) > array.getMovingAverage(20)))  {
               if ((highSwitch == 0) || ((averages.get(averages.size() - 1)) > highSwitch)) {
                 highSwitch = averages.get(averages.size() - 1);
-                System.out.println("High switch");
+                Interfacer.consolePrint("High switch");
                 Toolkit.getDefaultToolkit().beep();
               }
               expiration = 0;
@@ -73,8 +75,8 @@ public class RangeSpotter implements Runnable, Observer {
                   inRange = true;
                 }
                 if (inRange)  {
-                  System.out.println("sellSignal");
-                  //controller.sellSignal();
+                  Interfacer.consolePrint("sellSignal");
+                  controller.sellSignal();
                   if ((highSwitch - lowSwitch) > 20)  {
                     highSwitch = 0;
                     lowSwitch = 0;
@@ -84,7 +86,7 @@ public class RangeSpotter implements Runnable, Observer {
             } else if ((status == Bearish) && (averages.get(averages.size() - 1)) < array.getMovingAverage(20))  {
               if ((lowSwitch == 0) || ((averages.get(averages.size() - 1)) < lowSwitch)) {
                 lowSwitch = averages.get(averages.size() - 1);
-                System.out.println("Low switch");
+                Interfacer.consolePrint("Low switch");
                 Toolkit.getDefaultToolkit().beep();
               }
               expiration = 0;
@@ -92,8 +94,8 @@ public class RangeSpotter implements Runnable, Observer {
                   inRange = true;
                 }
                 if (inRange && ((highSwitch - lowSwitch) > 20))  {
-                  //controller.buySignal();
-                  System.out.println("buySignal");
+                  controller.buySignal();
+                  Interfacer.consolePrint("buySignal");
                 }
               }
         }
