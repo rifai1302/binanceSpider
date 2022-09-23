@@ -44,7 +44,8 @@ public class Trade {
         }
         float quantity = (usd - (float) 0.5) / dataHandler.getLatestPrice();
         openPrice = dataHandler.getLatestPrice();
-        quantity = (float)((float)Math.round(quantity * 100000.0) / 100000.0);
+        quantity = (float)((float)Math.round(quantity * 10000.0) / 10000.0);
+        quantity = (float) (quantity - 0.0001);
         client.newOrder(marketBuy(Constants.getCurrency(), String.valueOf(quantity)));
         open = true;
         openTime = LocalDateTime.now();
@@ -57,7 +58,8 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        float temp =(float)((float)Math.round(dataHandler.getBTCBalance() * 100000.0) / 100000.0);
+        float temp = (float) (btcFormat(String.valueOf(dataHandler.getBTCBalance())) - 0.00001);
+        System.out.println(temp);
         client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
         endPrice = dataHandler.getLatestPrice();
         open = false;
@@ -94,6 +96,14 @@ public class Trade {
         if (!open && !terminated)
             throw new UninitializedTradeException();
         return openTime;
+    }
+
+    public float btcFormat(String value)    {
+        String[] splitter = value.split("\\.");
+        String decimal = splitter[2];
+        if (decimal.length() > 5)
+            decimal = decimal.substring(0, 5);
+        return Float.parseFloat(splitter[0] + decimal);
     }
 
 }
