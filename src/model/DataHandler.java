@@ -33,7 +33,7 @@ public class DataHandler {
     }
 
     public float getUSDTBalance()   {
-        return (float) ((float)Math.round(Float.parseFloat(account.getAssetBalance("USDT").getFree()) * 100.0) / 100.0);
+        return (float) ((float)Math.round(Float.parseFloat(account.getAssetBalance("USDT").getFree()) * 100.0) / 100.0 - 0.01);
     }
 
     public float getBTCBalance() {
