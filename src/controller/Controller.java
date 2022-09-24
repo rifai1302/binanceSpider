@@ -31,6 +31,8 @@ public class Controller {
 
     public Controller (SensorArray sensorArray) {
         this.sensorArray = sensorArray;
+        Thread thread = new Thread(sensorArray);
+        thread.start();
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
