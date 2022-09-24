@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Interfacer extends Application implements Runnable {
 
@@ -101,7 +100,7 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> fTrades.setText(String.valueOf(controller.getTrades() - sensorArray.getSuccessfulTrades()));
       updater.add(update);
-      String format = consoleFormat(consoleLog);
+      String format = consoleFormat();
       if (!console.getText().equals(format)) {
         if (console.getBoundsInLocal().getHeight() > 151) {
           consoleLog.remove(0);
@@ -163,12 +162,12 @@ public class Interfacer extends Application implements Runnable {
     primaryStage.show();
   }
 
-  private String consoleFormat (List<String> list)  {
-    String s = "";
-    for (String string: list) {
-      s += string + "\n";
+  private String consoleFormat()  {
+    StringBuilder s = new StringBuilder();
+    for (String string: Interfacer.consoleLog) {
+      s.append(string).append("\n");
     }
-    return s;
+    return s.toString();
   }
 
   public static void consolePrint (String string)  {
