@@ -98,15 +98,11 @@ public class Trade {
     }
 
     public String btcFormat(String value)    {
-        System.out.println("btcFormat input: " + value);
         String[] splitter = value.split("\\.");
         String decimal = splitter[1];
-        System.out.println("splitter[0]: " + splitter[0]);
-        System.out.println("splitter[1]: " + splitter[1]);
         if (decimal.length() > 5)
             decimal = decimal.substring(0, 5);
-        System.out.println("decimal: " + decimal);
-        return splitter[0] + decimal;
+        return splitter[0] + "." + decimal;
     }
 
 }
