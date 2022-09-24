@@ -24,8 +24,7 @@ public class TrailingStopLoss extends Attachable implements Runnable {
             float boundary = (float) (highest - (0.15 * highest) / 100);
             if (Float.parseFloat(array.getLastInstantCandlestick().getClose()) < boundary)   {
                 try {
-                    trade.close();
-                    controller.tradeClosed();
+                    controller.sellSignal();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
