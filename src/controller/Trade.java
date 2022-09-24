@@ -58,7 +58,6 @@ public class Trade {
             throw new TerminatedTradeException();
         }
         String temp = btcFormat(client.getAccount().getAssetBalance("BTC").getFree());
-        System.out.println(temp);
         client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
         endPrice = sensorArray.getLatestPrice();
         open = false;
