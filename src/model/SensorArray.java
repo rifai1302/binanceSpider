@@ -48,7 +48,7 @@ public class SensorArray implements Runnable, Observable {
     public float getAverageProfit() {
         float avg = 0;
         for (int i = 1; i < balanceHistory.size(); i++) {
-            avg += balanceHistory.get(i) - balanceHistory.get(0);
+            avg += balanceHistory.get(i) - balanceHistory.get(i - 1);
         }
         avg = avg / balanceHistory.size();
         if (Float.isNaN(avg))
@@ -59,7 +59,7 @@ public class SensorArray implements Runnable, Observable {
     public float getTotalProfit()   {
         float total = 0;
         for (int i = 1; i < balanceHistory.size(); i++) {
-            total += balanceHistory.get(i) - balanceHistory.get(0);
+            total += balanceHistory.get(i) - balanceHistory.get(i - 1);
         }
         return (float) ((float) Math.round(total * 100.0) / 100.0);
     }
@@ -140,8 +140,9 @@ public class SensorArray implements Runnable, Observable {
                 chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
                 index++;
                 float balance = (Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
-                if ((balance > 5) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
+                if ((balance > 10) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
                     balanceHistory.add(getUSDTBalance());
+                    System.out.println("added");
                 }
             }
         }
