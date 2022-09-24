@@ -75,6 +75,10 @@ public class Controller {
         }
     }
 
+    public void printBTC()  {
+        Interfacer.consolePrint(String.valueOf(dataHandler.getBTCBalance()));
+    }
+
     public void addStrategist(Runnable strategist)   {
         strategists.add(strategist);
     }
