@@ -142,7 +142,6 @@ public class SensorArray implements Runnable, Observable {
                 float balance = (Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
                 if ((balance > 10) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
                     balanceHistory.add(balance);
-                    System.out.println("added");
                 }
             }
         }
