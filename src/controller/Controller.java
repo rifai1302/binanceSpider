@@ -2,11 +2,10 @@ package controller;
 
 import attachable.Attachable;
 import attachable.AverageStopLoss;
-import attachable.ConnectionFailsafe;
 import attachable.TrailingStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
-import model.DataHandler;
+import model.SensorArray;
 import view.Interfacer;
 
 import java.awt.*;
@@ -20,9 +19,8 @@ import java.util.ArrayList;
 
 public class Controller {
 
-    private final DataHandler dataHandler;
+    private final SensorArray sensorArray;
     private Trade trade;
-    private final DecimalFormat format = new DecimalFormat("#.##");
     private int status = 0;
     private LocalDateTime startTime;
     private int trades = 0;
@@ -31,9 +29,8 @@ public class Controller {
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
-    public Controller (DataHandler dataHandler) {
-        this.dataHandler = dataHandler;
-        format.setRoundingMode(RoundingMode.FLOOR);
+    public Controller (SensorArray sensorArray) {
+        this.sensorArray = sensorArray;
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
@@ -41,9 +38,9 @@ public class Controller {
         item.setLabel("Inchide");
         popup.add(item);
         TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
-        addStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
-        addAttachable(new AverageStopLoss(dataHandler.getSensorArray(), this));
-        addAttachable(new TrailingStopLoss(dataHandler.getSensorArray(), this));
+        addStrategist(new RangeSpotter(sensorArray, this, 4));
+        addAttachable(new AverageStopLoss(sensorArray, this));
+        addAttachable(new TrailingStopLoss(sensorArray, this));
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
@@ -76,7 +73,7 @@ public class Controller {
     }
 
     public void printBTC()  {
-        Interfacer.consolePrint(String.valueOf(dataHandler.getBTCBalance()));
+        Interfacer.consolePrint(String.valueOf(sensorArray.getBTCBalance()));
     }
 
     public void addStrategist(Runnable strategist)   {
@@ -120,7 +117,7 @@ public class Controller {
     public void buySignal() {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
-            trade = new Trade(dataHandler, dataHandler.getUSDTBalance());
+            trade = new Trade(sensorArray, sensorArray.getUSDTBalance());
             try {
                 trade.open();
                 status = 2;

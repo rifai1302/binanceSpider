@@ -16,16 +16,14 @@ import java.util.List;
 public class SensorArray implements Runnable, Observable {
 
     private final BinanceApiRestClient client;
-    private final Account account;
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
     private volatile int interval;
     private volatile ArrayList<Float> balanceHistory = new ArrayList<>();
     private volatile XYChart.Series chartData;
 
-    public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
+    public SensorArray  (BinanceApiRestClient client, int interval)   {
         this.client = client;
-        this.account = account;
         candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
         this.interval = interval;
     }
@@ -81,11 +79,28 @@ public class SensorArray implements Runnable, Observable {
     }
 
     public float getUSDTBalance()   {
-        return (float) ((float)Math.round(Float.parseFloat(account.getAssetBalance("USDT").getFree()) * 100.0) / 100.0 - 0.01);
+        try {
+            return (float) ((float) Math.round(balanceHistory.get(balanceHistory.size()) * 100.0) / 100.0 - 0.01);
+        } catch (Exception ignored) {
+            return 0;
+        }
+    }
+
+    public String getBTCBalance() {
+        return client.getAccount()
+                .getAssetBalance("BTC").getFree();
     }
 
     public Candlestick getLastCandlestick() {
         return candlesticks.get(candlesticks.size() - 1);
+    }
+
+    public BinanceApiRestClient getClient() {
+        return client;
+    }
+
+    public float getLatestPrice()   {
+        return(Float.parseFloat(getLastInstantCandlestick().getClose()));
     }
 
     public Candlestick getLastInstantCandlestick()  {
@@ -122,7 +137,8 @@ public class SensorArray implements Runnable, Observable {
                 Candlestick last = candlesticks.get(candlesticks.size() - 2);
                 chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
                 index++;
-                if ((getUSDTBalance() > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
+                if ((Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree())
+                        > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
                     balanceHistory.add(getUSDTBalance());
                 }
             }

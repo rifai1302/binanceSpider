@@ -1,22 +1,21 @@
 package controller;
 
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import com.binance.api.client.BinanceApiRestClient;
+import model.SensorArray;
 import throwable.InsufficientFundsException;
 import model.Constants;
-import model.DataHandler;
 import throwable.OngoingTradeException;
 import throwable.TerminatedTradeException;
 import throwable.UninitializedTradeException;
-import java.text.DecimalFormat;
+
 import static com.binance.api.client.domain.account.NewOrder.marketBuy;
 import static com.binance.api.client.domain.account.NewOrder.marketSell;
 
 public class Trade {
 
-    private final DataHandler dataHandler;
+    private final SensorArray sensorArray;
     private final BinanceApiRestClient client;
     private final float usd;
     private boolean open = false;
@@ -26,14 +25,14 @@ public class Trade {
     private LocalDateTime openTime;
     private float secondsOpen = 0;
 
-    public Trade(DataHandler dataHandler, float usd) {
+    public Trade(SensorArray sensorArray, float usd) {
         this.usd = usd;
-        this.dataHandler = dataHandler;
-        this.client = dataHandler.getClient();
+        this.sensorArray = sensorArray;
+        this.client = sensorArray.getClient();
     }
 
     public void open() throws Exception {
-        if (usd > dataHandler.getUSDTBalance()) {
+        if (usd > sensorArray.getUSDTBalance()) {
             throw new InsufficientFundsException();
         }
         if (open) {
@@ -42,8 +41,8 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        float quantity = (usd - (float) 0.5) / dataHandler.getLatestPrice();
-        openPrice = dataHandler.getLatestPrice();
+        float quantity = (usd - (float) 0.5) / sensorArray.getLatestPrice();
+        openPrice = sensorArray.getLatestPrice();
         quantity = (float)((float)Math.round(quantity * 10000.0) / 10000.0);
         quantity = (float) (quantity - 0.0001);
         client.newOrder(marketBuy(Constants.getCurrency(), String.valueOf(quantity)));
@@ -61,7 +60,7 @@ public class Trade {
         String temp = btcFormat(client.getAccount().getAssetBalance("BTC").getFree());
         System.out.println(temp);
         client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
-        endPrice = dataHandler.getLatestPrice();
+        endPrice = sensorArray.getLatestPrice();
         open = false;
         terminated = true;
         secondsOpen = ChronoUnit.SECONDS.between(openTime, LocalDateTime.now());

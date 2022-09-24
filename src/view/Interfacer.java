@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.javafx.scene.control.skin.Utils;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,35 +11,31 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.effect.Bloom;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.DataHandler;
 import model.SensorArray;
 import javafx.scene.control.TextField;
-import java.awt.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Interfacer extends Application implements Runnable {
 
-  private static DataHandler dataHandler;
+  private static SensorArray sensorArray;
   private static Controller controller;
   private volatile Parent root;
   private ChronoStringFormat format;
   private static final ArrayList<String> consoleLog = new ArrayList<>();
 
-  public void setDataHandler(DataHandler dataHandler)  {
-    Interfacer.dataHandler = dataHandler;
+  public void setSensorArray(SensorArray sensorArray)  {
+    Interfacer.sensorArray = sensorArray;
   }
 
   public void setController (Controller controller) {
@@ -75,14 +70,13 @@ public class Interfacer extends Application implements Runnable {
     xAxis.setUpperBound(30);
     yAxis.setTickUnit(35);
     primaryStage.setTitle("Păgangănul de Bitcoaie");
-    SensorArray array = dataHandler.getSensorArray();
     consolePrint("Consolă inițializată");
     Thread thread = new Thread(() -> {
       while (true) {
       ArrayList<Runnable> updater = new ArrayList<>();
-      Runnable update = () -> currentBalance.setText(dataHandler.getUSDTBalance() + " USDT");
+      Runnable update = () -> currentBalance.setText(sensorArray.getUSDTBalance() + " USDT");
       updater.add(update);
-      XYChart.Series data = array.getData();
+      XYChart.Series data = sensorArray.getData();
       if (data != null) {
         int index = Integer.parseInt((data.getData().toString().split(",")[0]).split("\\[")[2]);
         float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
@@ -93,19 +87,19 @@ public class Interfacer extends Application implements Runnable {
         update = () -> chart.getData().add(data);
         updater.add(update);
       }
-      update = () -> lastTrade.setText(array.getLastProfit() + " USDT");
+      update = () -> lastTrade.setText(sensorArray.getLastProfit() + " USDT");
       updater.add(update);
       update = () -> uptime.setText(format.format(controller.getUpTime()));
       updater.add(update);
-      update = () -> avgTrade.setText(array.getAverageProfit() + " USDT");
+      update = () -> avgTrade.setText(sensorArray.getAverageProfit() + " USDT");
       updater.add(update);
-      update = () -> totalProfit.setText(array.getTotalProfit() + " USDT");
+      update = () -> totalProfit.setText(sensorArray.getTotalProfit() + " USDT");
       updater.add(update);
       update = () -> trades.setText(String.valueOf(controller.getTrades()));
       updater.add(update);
-      update = () -> sTrades.setText(String.valueOf(array.getSuccessfulTrades()));
+      update = () -> sTrades.setText(String.valueOf(sensorArray.getSuccessfulTrades()));
       updater.add(update);
-      update = () -> fTrades.setText(String.valueOf(controller.getTrades() - array.getSuccessfulTrades()));
+      update = () -> fTrades.setText(String.valueOf(controller.getTrades() - sensorArray.getSuccessfulTrades()));
       updater.add(update);
       String format = consoleFormat(consoleLog);
       if (!console.getText().equals(format)) {
@@ -118,7 +112,7 @@ public class Interfacer extends Application implements Runnable {
       if (controller.getTrades() == 0)
         update = () -> success.setText("0%");
       else
-        update = () -> success.setText((array.getSuccessfulTrades() / controller.getTrades()) * 100 +
+        update = () -> success.setText((sensorArray.getSuccessfulTrades() / controller.getTrades()) * 100 +
                 " %");
       updater.add(update);
       if(controller.showUI()) {
@@ -156,7 +150,7 @@ public class Interfacer extends Application implements Runnable {
       }
         try {
           Thread.sleep(1000);
-        } catch (InterruptedException ex) {
+        } catch (InterruptedException ignored) {
         }
         for (Runnable runnable: updater) {
           Platform.runLater(runnable);
