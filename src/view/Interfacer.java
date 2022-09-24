@@ -68,7 +68,7 @@ public class Interfacer extends Application implements Runnable {
     xAxis.setLowerBound(0);
     xAxis.setUpperBound(30);
     yAxis.setTickUnit(35);
-    primaryStage.setTitle("Păgangănul de Bitcoaie");
+    primaryStage.setTitle("The Binance Spider");
     consolePrint("Consolă inițializată");
     Thread thread = new Thread(() -> {
       while (true) {

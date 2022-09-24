@@ -39,7 +39,7 @@ public class Controller {
         MenuItem item = new MenuItem();
         item.setLabel("Inchide");
         popup.add(item);
-        TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
+        TrayIcon trayIcon = new TrayIcon(icon, "The Binance Spider", popup);
         addStrategist(new RangeSpotter(sensorArray, this, 4));
         addAttachable(new AverageStopLoss(sensorArray, this));
         addAttachable(new TrailingStopLoss(sensorArray, this));
