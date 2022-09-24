@@ -26,6 +26,7 @@ public class SensorArray implements Runnable, Observable {
         this.client = client;
         candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
         this.interval = interval;
+        balanceHistory.add(Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
     }
 
     public XYChart.Series getData()   {
@@ -80,7 +81,7 @@ public class SensorArray implements Runnable, Observable {
 
     public float getUSDTBalance()   {
         try {
-            return (float) ((float) Math.round(balanceHistory.get(balanceHistory.size()) * 100.0) / 100.0 - 0.01);
+            return (float) ((float) Math.round(balanceHistory.get(balanceHistory.size() - 1) * 100.0) / 100.0 - 0.01);
         } catch (Exception ignored) {
             return 0;
         }
@@ -126,7 +127,6 @@ public class SensorArray implements Runnable, Observable {
     public void run()   {
         LocalDateTime prevTime = LocalDateTime.now();
         int index = 0;
-        balanceHistory.add(getUSDTBalance());
         while(!Thread.currentThread().isInterrupted()) {
             if (ChronoUnit.MILLIS.between(prevTime, LocalDateTime.now()) >= interval) {
                 candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
