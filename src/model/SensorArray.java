@@ -37,7 +37,9 @@ public class SensorArray implements Runnable, Observable {
 
     public float getLastProfit()    {
         try {
-            return balanceHistory.get(balanceHistory.size() - 1) - balanceHistory.get(balanceHistory.size() - 2);
+            return (float) (Math.round
+                                ((balanceHistory.get(balanceHistory.size() - 1) -
+                                        balanceHistory.get(balanceHistory.size() - 2)) * 100.0) / 100.0);
         } catch (IndexOutOfBoundsException e)   {
             return 0;
         }
@@ -51,7 +53,7 @@ public class SensorArray implements Runnable, Observable {
         avg = avg / balanceHistory.size();
         if (Float.isNaN(avg))
             return 0;
-        return avg;
+        return (float) ((float) Math.round(avg * 100.0) / 100.0);
     }
 
     public float getTotalProfit()   {
@@ -59,7 +61,7 @@ public class SensorArray implements Runnable, Observable {
         for (int i = 1; i < balanceHistory.size(); i++) {
             total += balanceHistory.get(i) - balanceHistory.get(0);
         }
-        return total;
+        return (float) ((float) Math.round(total * 100.0) / 100.0);
     }
 
     public int getSuccessfulTrades()    {
@@ -137,8 +139,8 @@ public class SensorArray implements Runnable, Observable {
                 Candlestick last = candlesticks.get(candlesticks.size() - 2);
                 chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
                 index++;
-                if ((Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree())
-                        > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
+                float balance = (Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
+                if ((balance > 1) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
                     balanceHistory.add(getUSDTBalance());
                 }
             }
