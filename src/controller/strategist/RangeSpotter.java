@@ -103,6 +103,7 @@ public class RangeSpotter implements Runnable, Observer {
         if ((highSwitch != 0) || (lowSwitch != 0))
         expiration++;
         if (expiration >= 60) {
+          controller.sellSignal();
           inRange = false;
           shifting = new ShiftingArray<>(5);
           highSwitch = 0;
