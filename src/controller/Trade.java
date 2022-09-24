@@ -58,7 +58,7 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        float temp = (float) (btcFormat(String.valueOf(dataHandler.getBTCBalance())) - 0.00001);
+        String temp = btcFormat(client.getAccount().getAssetBalance("BTC").getFree());
         System.out.println(temp);
         client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
         endPrice = dataHandler.getLatestPrice();
@@ -98,12 +98,16 @@ public class Trade {
         return openTime;
     }
 
-    public float btcFormat(String value)    {
+    public String btcFormat(String value)    {
+        System.out.println("btcFormat input: " + value);
         String[] splitter = value.split("\\.");
-        String decimal = splitter[2];
+        String decimal = splitter[1];
+        System.out.println("splitter[0]: " + splitter[0]);
+        System.out.println("splitter[1]: " + splitter[1]);
         if (decimal.length() > 5)
             decimal = decimal.substring(0, 5);
-        return Float.parseFloat(splitter[0] + decimal);
+        System.out.println("decimal: " + decimal);
+        return splitter[0] + decimal;
     }
 
 }
