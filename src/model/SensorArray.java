@@ -140,7 +140,7 @@ public class SensorArray implements Runnable, Observable {
                 chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
                 index++;
                 float balance = (Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
-                if ((balance > 1) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
+                if ((balance > 5) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
                     balanceHistory.add(getUSDTBalance());
                 }
             }
