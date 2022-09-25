@@ -72,7 +72,14 @@ public class RangeSpotter implements Runnable, Observer {
               }
               expiration = 0;
                 if ((lowSwitch != 0) && (!inRange) && ((highSwitch - lowSwitch) > 20)) {
-                  inRange = true;
+                  if (((highSwitch - (averages.get(averages.size() - 1)) < 15)
+                          || ((averages.get(averages.size() - 1)) - lowSwitch < 15))) {
+                    shifting = new ShiftingArray<>(5);
+                    highSwitch = 0;
+                    lowSwitch = 0;
+                    expiration = 0;
+                  } else
+                    inRange = true;
                 }
                 if (inRange)  {
                   Interfacer.consolePrint("sellSignal");
@@ -91,6 +98,13 @@ public class RangeSpotter implements Runnable, Observer {
               }
               expiration = 0;
                 if((highSwitch != 0) && (!inRange) && ((highSwitch - lowSwitch) > 20)) {
+                  if (((highSwitch - (averages.get(averages.size() - 1)) < 15)
+                          || ((averages.get(averages.size() - 1)) - lowSwitch < 15))) {
+                    shifting = new ShiftingArray<>(5);
+                    highSwitch = 0;
+                    lowSwitch = 0;
+                    expiration = 0;
+                  } else
                   inRange = true;
                 }
                 if (inRange && ((highSwitch - lowSwitch) > 20))  {
