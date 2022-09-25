@@ -21,7 +21,7 @@ public class TrailingStopLoss extends Attachable implements Runnable {
             float close = Float.parseFloat(array.getLastInstantCandlestick().getClose());
             if (close > highest)
                 highest = close;
-            float boundary = (float) (highest - (0.10 * highest) / 100);
+            float boundary = (float) (highest - (0.15 * highest) / 100);
             if (Float.parseFloat(array.getLastInstantCandlestick().getClose()) < boundary)   {
                 try {
                     controller.sellSignal();

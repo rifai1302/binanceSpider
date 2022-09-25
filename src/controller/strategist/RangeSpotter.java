@@ -72,8 +72,8 @@ public class RangeSpotter implements Runnable, Observer {
               }
               expiration = 0;
                 if ((lowSwitch != 0) && (!inRange) && ((highSwitch - lowSwitch) > 20)) {
-                  if (((highSwitch - (averages.get(averages.size() - 1)) < 15)
-                          && ((averages.get(averages.size() - 1)) - lowSwitch < 15))) {
+                  if (((highSwitch - (averages.get(averages.size() - 1)) < 25)
+                          && ((averages.get(averages.size() - 1)) - lowSwitch < 25))) {
                     shifting = new ShiftingArray<>(5);
                     highSwitch = 0;
                     lowSwitch = 0;
@@ -98,8 +98,8 @@ public class RangeSpotter implements Runnable, Observer {
               }
               expiration = 0;
                 if((highSwitch != 0) && (!inRange) && ((highSwitch - lowSwitch) > 20)) {
-                  if (((highSwitch - (averages.get(averages.size() - 1)) < 15)
-                          && ((averages.get(averages.size() - 1)) - lowSwitch < 15))) {
+                  if (((highSwitch - (averages.get(averages.size() - 1)) < 25)
+                          && ((averages.get(averages.size() - 1)) - lowSwitch < 25))) {
                     shifting = new ShiftingArray<>(5);
                     highSwitch = 0;
                     lowSwitch = 0;

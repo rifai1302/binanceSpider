@@ -18,7 +18,7 @@ public class AverageStopLoss extends Attachable implements Runnable {
     public void run() {
         while (trade.isOpen()) {
             if (!boundary)  {
-                if (sensorArray.getMovingAverage(5) > sensorArray.getMovingAverage(20) + 25)
+                if (sensorArray.getMovingAverage(5) > sensorArray.getMovingAverage(20) + 15)
                     boundary = true;
             } else if (Float.parseFloat(sensorArray.getLastInstantCandlestick().getClose())
                     < sensorArray.getMovingAverage(20)) {
