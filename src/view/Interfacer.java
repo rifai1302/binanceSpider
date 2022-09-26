@@ -111,7 +111,7 @@ public class Interfacer extends Application implements Runnable {
       if (controller.getTrades() == 0)
         update = () -> success.setText("0%");
       else
-        update = () -> success.setText((sensorArray.getSuccessfulTrades() / controller.getTrades()) * 100 +
+        update = () -> success.setText(Math.round(((float)sensorArray.getSuccessfulTrades() / (float)controller.getTrades()) * 100.0) +
                 " %");
       updater.add(update);
       if(controller.showUI()) {
