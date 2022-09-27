@@ -40,8 +40,8 @@ public class Controller {
         item.setLabel("Inchide");
         popup.add(item);
         TrayIcon trayIcon = new TrayIcon(icon, "The Binance Spider", popup);
-        addStrategist(new RangeSpotter(sensorArray, this, 4));
-        addAttachable(new AverageStopLoss(sensorArray, this));
+        addStrategist(new RangeSpotter(sensorArray, this, 5));
+        //addAttachable(new AverageStopLoss(sensorArray, this));
         addAttachable(new TrailingStopLoss(sensorArray, this));
         trayIcon.addActionListener(e -> {
             showUI = true;
