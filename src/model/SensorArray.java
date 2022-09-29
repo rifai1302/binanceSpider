@@ -16,18 +16,17 @@ import java.util.List;
 public class SensorArray implements Runnable, Observable {
 
     private final BinanceApiRestClient client;
-    private final Account account;
     private volatile List<Candlestick> candlesticks;
     private volatile Candlestick lastUpdate;
     private volatile int interval;
     private volatile ArrayList<Float> balanceHistory = new ArrayList<>();
     private volatile XYChart.Series chartData;
 
-    public SensorArray  (BinanceApiRestClient client, Account account, int interval)   {
+    public SensorArray  (BinanceApiRestClient client, int interval)   {
         this.client = client;
-        this.account = account;
         candlesticks = client.getCandlestickBars(Constants.getCurrency(), CandlestickInterval.ONE_MINUTE);
         this.interval = interval;
+        balanceHistory.add(Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
     }
 
     public XYChart.Series getData()   {
@@ -38,7 +37,9 @@ public class SensorArray implements Runnable, Observable {
 
     public float getLastProfit()    {
         try {
-            return balanceHistory.get(balanceHistory.size() - 1) - balanceHistory.get(balanceHistory.size() - 2);
+            return (float) (Math.round
+                                ((balanceHistory.get(balanceHistory.size() - 1) -
+                                        balanceHistory.get(balanceHistory.size() - 2)) * 100.0) / 100.0);
         } catch (IndexOutOfBoundsException e)   {
             return 0;
         }
@@ -47,20 +48,20 @@ public class SensorArray implements Runnable, Observable {
     public float getAverageProfit() {
         float avg = 0;
         for (int i = 1; i < balanceHistory.size(); i++) {
-            avg += balanceHistory.get(i) - balanceHistory.get(0);
+            avg += balanceHistory.get(i) - balanceHistory.get(i - 1);
         }
         avg = avg / balanceHistory.size();
         if (Float.isNaN(avg))
             return 0;
-        return avg;
+        return (float) ((float) Math.round(avg * 100.0) / 100.0);
     }
 
     public float getTotalProfit()   {
         float total = 0;
         for (int i = 1; i < balanceHistory.size(); i++) {
-            total += balanceHistory.get(i) - balanceHistory.get(0);
+            total += balanceHistory.get(i) - balanceHistory.get(i - 1);
         }
-        return total;
+        return (float) ((float) Math.round(total * 100.0) / 100.0);
     }
 
     public int getSuccessfulTrades()    {
@@ -81,11 +82,28 @@ public class SensorArray implements Runnable, Observable {
     }
 
     public float getUSDTBalance()   {
-        return (float) ((float)Math.round(Float.parseFloat(account.getAssetBalance("USDT").getFree()) * 100.0) / 100.0);
+        try {
+            return (float) ((float) Math.round(balanceHistory.get(balanceHistory.size() - 1) * 100.0) / 100.0 - 0.01);
+        } catch (Exception ignored) {
+            return 0;
+        }
+    }
+
+    public String getBTCBalance() {
+        return client.getAccount()
+                .getAssetBalance("BTC").getFree();
     }
 
     public Candlestick getLastCandlestick() {
         return candlesticks.get(candlesticks.size() - 1);
+    }
+
+    public BinanceApiRestClient getClient() {
+        return client;
+    }
+
+    public float getLatestPrice()   {
+        return(Float.parseFloat(getLastInstantCandlestick().getClose()));
     }
 
     public Candlestick getLastInstantCandlestick()  {
@@ -121,8 +139,9 @@ public class SensorArray implements Runnable, Observable {
                 Candlestick last = candlesticks.get(candlesticks.size() - 2);
                 chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
                 index++;
-                if ((getUSDTBalance() > 1) && (balanceHistory.get(balanceHistory.size() - 1) != getUSDTBalance()))   {
-                    balanceHistory.add(getUSDTBalance());
+                float balance = (Float.parseFloat(client.getAccount().getAssetBalance("USDT").getFree()));
+                if ((balance > 10) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
+                    balanceHistory.add(balance);
                 }
             }
         }

@@ -17,15 +17,19 @@ public class TrailingStopLoss extends Attachable implements Runnable {
     @Override
     public void run()   {
         float highest = 0;
+        try {
+            Thread.sleep(20000);
+        } catch (Exception ignored) {
+
+        }
         while(trade.isOpen())   {
             float close = Float.parseFloat(array.getLastInstantCandlestick().getClose());
             if (close > highest)
                 highest = close;
-            float boundary = (float) (highest - (0.15 * highest) / 100);
-            if (Float.parseFloat(array.getLastInstantCandlestick().getClose()) < boundary)   {
+            float boundary = (float) (highest - 100.0);
+            if (close < boundary)   {
                 try {
-                    trade.close();
-                    controller.tradeClosed();
+                    controller.sellSignal();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -2,11 +2,10 @@ package controller;
 
 import attachable.Attachable;
 import attachable.AverageStopLoss;
-import attachable.ConnectionFailsafe;
 import attachable.TrailingStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
-import model.DataHandler;
+import model.SensorArray;
 import view.Interfacer;
 
 import java.awt.*;
@@ -20,9 +19,8 @@ import java.util.ArrayList;
 
 public class Controller {
 
-    private final DataHandler dataHandler;
+    private final SensorArray sensorArray;
     private Trade trade;
-    private final DecimalFormat format = new DecimalFormat("#.##");
     private int status = 0;
     private LocalDateTime startTime;
     private int trades = 0;
@@ -31,19 +29,20 @@ public class Controller {
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
-    public Controller (DataHandler dataHandler) {
-        this.dataHandler = dataHandler;
-        format.setRoundingMode(RoundingMode.FLOOR);
+    public Controller (SensorArray sensorArray) {
+        this.sensorArray = sensorArray;
+        Thread thread = new Thread(sensorArray);
+        thread.start();
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
         MenuItem item = new MenuItem();
         item.setLabel("Inchide");
         popup.add(item);
-        TrayIcon trayIcon = new TrayIcon(icon, "Păgangănul de Bitcoaie", popup);
-        addStrategist(new RangeSpotter(dataHandler.getSensorArray(), this, 4));
-        addAttachable(new AverageStopLoss(dataHandler.getSensorArray(), this));
-        addAttachable(new TrailingStopLoss(dataHandler.getSensorArray(), this));
+        TrayIcon trayIcon = new TrayIcon(icon, "The Binance Spider", popup);
+        addStrategist(new RangeSpotter(sensorArray, this, 5));
+        //addAttachable(new AverageStopLoss(sensorArray, this));
+        addAttachable(new TrailingStopLoss(sensorArray, this));
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
@@ -73,6 +72,10 @@ public class Controller {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void printBTC()  {
+        Interfacer.consolePrint(String.valueOf(sensorArray.getBTCBalance()));
     }
 
     public void addStrategist(Runnable strategist)   {
@@ -116,9 +119,10 @@ public class Controller {
     public void buySignal() {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
-            trade = new Trade(dataHandler, dataHandler.getUSDTBalance());
+            trade = new Trade(sensorArray, sensorArray.getUSDTBalance());
             try {
                 trade.open();
+                status = 2;
                 for (Attachable attachable: attachables)    {
                     attachable.attachToTrade(trade);
                     Thread thread = new Thread(attachable);
@@ -128,8 +132,7 @@ public class Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Open signal.");
-            status = 2;
+            Interfacer.consolePrint("Open signal.");
         }
     }
 
@@ -139,12 +142,12 @@ public class Controller {
                 trade.close();
                 tradeClosed();
                 trades++;
+                status = 1;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        status = 1;
-        System.out.println("Close signal.");
+        Interfacer.consolePrint("Close signal.");
     }
 
     public void tradeClosed()   {

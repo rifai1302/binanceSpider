@@ -1,7 +1,7 @@
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import controller.Controller;
-import model.DataHandler;
+import model.SensorArray;
 import view.Interfacer;
 
 import java.io.BufferedReader;
@@ -20,11 +20,11 @@ public class binanceSpider {
         final String secret = reader.readLine();
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey, secret);
         BinanceApiRestClient client = factory.newRestClient();
-        DataHandler dataHandler = new DataHandler(client);
+        SensorArray sensorArray = new SensorArray(client, 30000);
         Interfacer interfacer = new Interfacer();
-        Controller controller = new Controller(dataHandler);
+        Controller controller = new Controller(sensorArray);
         interfacer.setController(controller);
-        interfacer.setDataHandler(dataHandler);
+        interfacer.setSensorArray(sensorArray);
         Thread view = new Thread(interfacer);
         view.start();
     }
