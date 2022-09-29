@@ -29,7 +29,6 @@ public class TrailingStopLoss extends Attachable implements Runnable {
             float boundary = (float) (highest - 100.0);
             if (close < boundary)   {
                 try {
-                    System.out.println("Trailing stop sell signal.");
                     controller.sellSignal();
                 } catch (Exception e) {
                     e.printStackTrace();
