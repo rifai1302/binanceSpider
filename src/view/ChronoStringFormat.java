@@ -49,7 +49,7 @@ public class ChronoStringFormat {
     if ((m > 0) && (d < 1)) {
       ret += m + " min ";
     }
-    if (h < 1)
+    if ((h < 1) && (d < 1))
     ret += s + " s ";
     return ret;
   }
