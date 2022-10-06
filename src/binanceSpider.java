@@ -1,6 +1,7 @@
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import controller.Controller;
+import model.Pairwise;
 import model.SensorArray;
 import view.Interfacer;
 
@@ -20,12 +21,16 @@ public class binanceSpider {
         final String secret = reader.readLine();
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey, secret);
         BinanceApiRestClient client = factory.newRestClient();
-        SensorArray sensorArray = new SensorArray(client, 30000, "BTC", "USDT");
+        SensorArray btcSensorArray = new SensorArray(client, 30000, "BTC", "USDT", 0);
+        SensorArray ethSensorArray = new SensorArray(client, 30000, "ETH", "USDT", 30000);
         Interfacer interfacer = new Interfacer();
-        Controller controller = new Controller(sensorArray);
-        interfacer.setController(controller);
-        interfacer.setSensorArray(sensorArray);
-        Thread view = new Thread(interfacer);
-        view.start();
+        Controller btcController = new Controller(btcSensorArray);
+        Controller ethController = new Controller(ethSensorArray);
+        Pairwise btc = new Pairwise(btcController, btcSensorArray);
+        Pairwise eth = new Pairwise(ethController, ethSensorArray);
+        interfacer.addPairwise(btc);
+        interfacer.addPairwise(eth);
+        Thread btcView = new Thread(interfacer);
+        btcView.start();
     }
 }

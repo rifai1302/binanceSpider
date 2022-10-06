@@ -17,28 +17,27 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Pairwise;
 import model.SensorArray;
 import javafx.scene.control.TextField;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.Key;
 import java.util.ArrayList;
 
 public class Interfacer extends Application implements Runnable {
 
   private static SensorArray sensorArray;
   private static Controller controller;
+  private static ArrayList<Pairwise> pairs = new ArrayList<>();
   private volatile Parent root;
   private ChronoStringFormat format;
   private static final ArrayList<String> consoleLog = new ArrayList<>();
 
-  public void setSensorArray(SensorArray sensorArray)  {
-    Interfacer.sensorArray = sensorArray;
-  }
-
-  public void setController (Controller controller) {
-    Interfacer.controller = controller;
+  public void addPairwise(Pairwise pairwise)  {
+    pairs.add(pairwise);
   }
 
   @Override
@@ -60,6 +59,7 @@ public class Interfacer extends Application implements Runnable {
     Text fTrades = (Text) root.lookup("#failedTradesValue");
     Text success = (Text) root.lookup("#successRateValue");
     Text console = (Text) root.lookup("#consoleOutput");
+    Text crypto = (Text) root.lookup("#cryptoText");
     LineChart chart = (LineChart) root.lookup("#bitChart");
     NumberAxis xAxis = (NumberAxis) root.lookup("#xAxis");
     NumberAxis yAxis = (NumberAxis) root.lookup("#yAxis");
@@ -74,6 +74,8 @@ public class Interfacer extends Application implements Runnable {
       while (true) {
       ArrayList<Runnable> updater = new ArrayList<>();
       Runnable update = () -> currentBalance.setText(sensorArray.getStableBalance() + " " + sensorArray.getStableCoin());
+      updater.add(update);
+      update = () -> crypto.setText(sensorArray.getCryptoCoin());
       updater.add(update);
       XYChart.Series data = sensorArray.getData();
       try {
@@ -181,6 +183,8 @@ public class Interfacer extends Application implements Runnable {
 
   @Override
   public void run() {
+    controller = pairs.get(0).getController();
+    sensorArray = pairs.get(0).getSensorArray();
     launch();
   }
 
@@ -224,6 +228,40 @@ public class Interfacer extends Application implements Runnable {
         consolePrint("Comandă necunoscută");
       field.setText("");
     }
+  }
+
+  public void btcMouseEntered(MouseEvent event) {
+    event.consume();
+    Glow glow = new Glow();
+    glow.setLevel(1.0);
+    ((Node) event.getSource()).setEffect(glow);
+  }
+
+  public void btcMouseExited(MouseEvent event)  {
+    event.consume();
+    ((Node) event.getSource()).setEffect(null);
+  }
+
+  public void btcMouseClicked(MouseEvent event) {
+    controller = pairs.get(0).getController();
+    sensorArray = pairs.get(0).getSensorArray();
+  }
+
+  public void ethMouseEntered(MouseEvent event) {
+    event.consume();
+    Glow glow = new Glow();
+    glow.setLevel(1.0);
+    ((Node) event.getSource()).setEffect(glow);
+  }
+
+  public void ethMouseExited(MouseEvent event)  {
+    event.consume();
+    ((Node) event.getSource()).setEffect(null);
+  }
+
+  public void ethMouseClicked(MouseEvent event) {
+    controller = pairs.get(1).getController();
+    sensorArray = pairs.get(1).getSensorArray();
   }
 
 

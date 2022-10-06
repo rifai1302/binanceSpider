@@ -23,14 +23,16 @@ public class SensorArray implements Runnable, Observable {
     private volatile XYChart.Series chartData;
     private final String crypto;
     private final String stable;
+    private final int startDelay;
 
-    public SensorArray  (BinanceApiRestClient client, int interval, String crypto, String stable)   {
+    public SensorArray  (BinanceApiRestClient client, int interval, String crypto, String stable, int startDelay)   {
         this.client = client;
         candlesticks = client.getCandlestickBars(crypto + stable, CandlestickInterval.ONE_MINUTE);
         this.interval = interval;
         this.crypto = crypto;
         this.stable = stable;
         balanceHistory.add(Float.parseFloat(client.getAccount().getAssetBalance(stable).getFree()));
+        this.startDelay = startDelay;
     }
 
     public XYChart.Series getData()   {
@@ -139,6 +141,10 @@ public class SensorArray implements Runnable, Observable {
 
     @Override
     public void run()   {
+        try {
+            Thread.sleep(startDelay);
+        } catch (Exception ignored) {
+        }
         LocalDateTime prevTime = LocalDateTime.now();
         int index = 0;
         while(!Thread.currentThread().isInterrupted()) {

@@ -177,5 +177,20 @@
             <NumberAxis fx:id="yAxis" side="LEFT" />
           </yAxis>
       </LineChart>
+      <Text fx:id="btcButton" boundsType="VISUAL" fill="#e3ff00" layoutX="55.0" layoutY="650.0" onMouseClicked="#btcMouseClicked" onMouseEntered="#btcMouseEntered" onMouseExited="#btcMouseExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Bitcoin" wrappingWidth="94.54200744628906">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="ethButton" boundsType="VISUAL" fill="#db93ff" layoutX="163.0" layoutY="650.0" onMouseClicked="#ethMouseClicked" onMouseEntered="#ethMouseEntered" onMouseExited="#ethMouseExited" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="Ethereum">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
+      <Text fx:id="cryptoText" fill="WHITE" layoutX="644.0" layoutY="622.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="BTC" textAlignment="CENTER">
+         <font>
+            <Font name="ArtifaktElement-Medium" size="27.0" />
+         </font>
+      </Text>
    </children>
 </Pane>
