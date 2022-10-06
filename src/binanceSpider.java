@@ -24,13 +24,13 @@ public class binanceSpider {
         SensorArray btcSensorArray = new SensorArray(client, 30000, "BTC", "USDT", 0);
         SensorArray ethSensorArray = new SensorArray(client, 30000, "ETH", "USDT", 30000);
         Interfacer interfacer = new Interfacer();
-        Controller btcController = new Controller(btcSensorArray, 45);
-        Controller ethController = new Controller(ethSensorArray, 45);
+        Controller btcController = new Controller(btcSensorArray, 48);
+        Controller ethController = new Controller(ethSensorArray, 48);
         Pairwise btc = new Pairwise(btcController, btcSensorArray);
         Pairwise eth = new Pairwise(ethController, ethSensorArray);
         interfacer.addPairwise(btc);
         interfacer.addPairwise(eth);
-        Thread btcView = new Thread(interfacer);
-        btcView.start();
+        Thread view = new Thread(interfacer);
+        view.start();
     }
 }

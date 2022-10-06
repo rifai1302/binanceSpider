@@ -20,20 +20,17 @@ import javafx.stage.Stage;
 import model.Pairwise;
 import model.SensorArray;
 import javafx.scene.control.TextField;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.security.Key;
 import java.util.ArrayList;
 
 public class Interfacer extends Application implements Runnable {
 
   private static SensorArray sensorArray;
   private static Controller controller;
-  private static ArrayList<Pairwise> pairs = new ArrayList<>();
-  private volatile Parent root;
   private ChronoStringFormat format;
+  private static final ArrayList<Pairwise> pairs = new ArrayList<>();
   private static final ArrayList<String> consoleLog = new ArrayList<>();
 
   public void addPairwise(Pairwise pairwise)  {
@@ -44,7 +41,7 @@ public class Interfacer extends Application implements Runnable {
   public void start(Stage primaryStage) throws IOException {
     Platform.setImplicitExit(false);
     URL url = new File("fxml/main.fxml").toURI().toURL();
-    root = FXMLLoader.load(url);
+    Parent root = FXMLLoader.load(url);
     format = new ChronoStringFormat();
     Scene scene = new Scene(root);
     primaryStage.setResizable(false);
