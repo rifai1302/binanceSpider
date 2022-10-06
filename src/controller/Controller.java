@@ -25,13 +25,15 @@ public class Controller {
     private int status = 0;
     private LocalDateTime startTime;
     private int trades = 0;
+    private volatile int percentage;
     private boolean showUI = false;
     private volatile ArrayList<Runnable> strategists = new ArrayList<>();
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
-    public Controller (SensorArray sensorArray) {
+    public Controller (SensorArray sensorArray, int percentage) {
         this.sensorArray = sensorArray;
+        this.percentage = percentage;
         Thread thread = new Thread(sensorArray);
         thread.start();
         File iconFile = new File("fxml/trayicon.png");
@@ -120,7 +122,7 @@ public class Controller {
     public void buySignal() {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
-            trade = new Trade(sensorArray, sensorArray.getStableBalance());
+            trade = new Trade(sensorArray, sensorArray.getStableBalance() / Math.round((float) 100 / percentage));
             try {
                 trade.open();
                 status = 2;
