@@ -2,6 +2,7 @@ package controller;
 
 import attachable.Attachable;
 import attachable.AverageStopLoss;
+import attachable.ConnectionFailsafe;
 import attachable.TrailingStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
@@ -74,8 +75,8 @@ public class Controller {
         }
     }
 
-    public void printBTC()  {
-        Interfacer.consolePrint(String.valueOf(sensorArray.getBTCBalance()));
+    public void printCrypto()  {
+        Interfacer.consolePrint(String.valueOf(sensorArray.getCryptoBalance()));
     }
 
     public void addStrategist(Runnable strategist)   {
@@ -119,7 +120,7 @@ public class Controller {
     public void buySignal() {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
-            trade = new Trade(sensorArray, sensorArray.getUSDTBalance());
+            trade = new Trade(sensorArray, sensorArray.getStableBalance());
             try {
                 trade.open();
                 status = 2;

@@ -73,18 +73,23 @@ public class Interfacer extends Application implements Runnable {
     Thread thread = new Thread(() -> {
       while (true) {
       ArrayList<Runnable> updater = new ArrayList<>();
-      Runnable update = () -> currentBalance.setText(sensorArray.getUSDTBalance() + " USDT");
+      Runnable update = () -> currentBalance.setText(sensorArray.getStableBalance() + " " + sensorArray.getStableCoin());
       updater.add(update);
       XYChart.Series data = sensorArray.getData();
-      if (data != null) {
-        int index = Integer.parseInt((data.getData().toString().split(",")[0]).split("\\[")[2]);
-        float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
-        yAxis.setUpperBound(price + 175);
-        yAxis.setLowerBound(price - 175);
-        xAxis.setLowerBound(index - 20);
-        xAxis.setUpperBound(index + 10);
-        update = () -> chart.getData().add(data);
-        updater.add(update);
+      try {
+        if (data != null) {
+          int index = Integer.parseInt((data.getData().toString().split(",")[0]).split("\\[")[2]);
+          float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
+          yAxis.setUpperBound(price + 175);
+          yAxis.setLowerBound(price - 175);
+          xAxis.setLowerBound(index - 20);
+          xAxis.setUpperBound(index + 10);
+          update = () -> chart.getData().add(data);
+          updater.add(update);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        Interfacer.consolePrint("Interfacer exception caught.");
       }
       update = () -> lastTrade.setText(sensorArray.getLastProfit() + " USDT");
       updater.add(update);

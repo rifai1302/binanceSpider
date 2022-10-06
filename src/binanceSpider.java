@@ -20,7 +20,7 @@ public class binanceSpider {
         final String secret = reader.readLine();
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey, secret);
         BinanceApiRestClient client = factory.newRestClient();
-        SensorArray sensorArray = new SensorArray(client, 30000);
+        SensorArray sensorArray = new SensorArray(client, 30000, "BTC", "USDT");
         Interfacer interfacer = new Interfacer();
         Controller controller = new Controller(sensorArray);
         interfacer.setController(controller);
