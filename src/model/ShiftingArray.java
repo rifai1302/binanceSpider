@@ -43,4 +43,10 @@ public class ShiftingArray<T> {
     list = array.stream().toList();
     return list;
   }
+
+  public T getLast()  {
+    if (array.size() == 0)
+      return null;
+    return array.get(array.size() - 1);
+  }
 }

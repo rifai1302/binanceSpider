@@ -54,12 +54,17 @@ public class RangeSpotter implements Runnable, Observer {
   @Override
   public void run() {
     ShiftingArray<Float> shifting = new ShiftingArray<>(5);
+    Interfacer.consolePrint("Range spotter started.");
     byte expiration = 0;
     boolean inRange = false;
     float highSwitch = 0;
     float lowSwitch = 0;
     while (!Thread.currentThread().isInterrupted()) {
       if (arrayUpdated) {
+        arrayUpdated = false;
+        if (shifting.getLast() == null)
+          shifting.add(array.getMovingAverage(maRange));
+        else if ((shifting.getLast() != null) && (array.getMovingAverage(maRange) != shifting.getLast()))
         shifting.add(array.getMovingAverage(maRange));
         if (shifting.isFilled()) {
           List<Float> averages = shifting.getStandardArray();
@@ -68,6 +73,7 @@ public class RangeSpotter implements Runnable, Observer {
               if ((highSwitch == 0) || ((averages.get(averages.size() - 1)) > highSwitch)) {
                 highSwitch = averages.get(averages.size() - 1);
                 Interfacer.consolePrint("High switch");
+                System.out.println("High switch");
                 Toolkit.getDefaultToolkit().beep();
               }
               expiration = 0;
@@ -113,7 +119,6 @@ public class RangeSpotter implements Runnable, Observer {
                 }
               }
         }
-        arrayUpdated = false;
         if ((highSwitch != 0) || (lowSwitch != 0))
         expiration++;
         if (expiration >= 30) {
@@ -123,6 +128,11 @@ public class RangeSpotter implements Runnable, Observer {
           highSwitch = 0;
           lowSwitch = 0;
           expiration = 0;
+        }
+        try {
+          Thread.sleep(5000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
         }
       }
     }
