@@ -12,6 +12,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
 import model.Pairwise;
 import model.SensorArray;
 import javafx.scene.control.TextField;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +35,7 @@ public class Interfacer extends Application implements Runnable {
   private ChronoStringFormat format;
   private static final ArrayList<Pairwise> pairs = new ArrayList<>();
   private static final ArrayList<String> consoleLog = new ArrayList<>();
+  private volatile boolean instantUpdate = false;
 
   public void addPairwise(Pairwise pairwise)  {
     pairs.add(pairwise);
@@ -60,6 +64,7 @@ public class Interfacer extends Application implements Runnable {
     LineChart chart = (LineChart) root.lookup("#bitChart");
     NumberAxis xAxis = (NumberAxis) root.lookup("#xAxis");
     NumberAxis yAxis = (NumberAxis) root.lookup("#yAxis");
+    ImageView logo = (ImageView) root.lookup("#spiderLogo");
     xAxis.setAutoRanging(false);
     yAxis.setAutoRanging(false);
     xAxis.setLowerBound(0);
@@ -152,7 +157,20 @@ public class Interfacer extends Application implements Runnable {
         }
       }
         try {
-          Thread.sleep(1000);
+          if(!instantUpdate) {
+            Thread.sleep(1000);
+          } else {
+            if ((controller.getStatus() == 1) || (controller.getStatus() == 2))  {
+              Bloom bloom = new Bloom();
+              bloom.setThreshold(0.23);
+              update = () -> logo.setEffect(bloom);
+              updater.add(update);
+            } else {
+              update = () -> logo.setEffect(null);
+              updater.add(update);
+            }
+            instantUpdate = false;
+          }
         } catch (InterruptedException ignored) {
         }
         for (Runnable runnable: updater) {
@@ -242,6 +260,7 @@ public class Interfacer extends Application implements Runnable {
   public void btcMouseClicked(MouseEvent event) {
     controller = pairs.get(0).getController();
     sensorArray = pairs.get(0).getSensorArray();
+    instantUpdate = true;
   }
 
   public void ethMouseEntered(MouseEvent event) {
@@ -259,6 +278,7 @@ public class Interfacer extends Application implements Runnable {
   public void ethMouseClicked(MouseEvent event) {
     controller = pairs.get(1).getController();
     sensorArray = pairs.get(1).getSensorArray();
+    instantUpdate = true;
   }
 
 
