@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class Controller {
 
     private final SensorArray sensorArray;
+    private final Thread arrayThread;
     private Trade trade;
     private int status = 0;
     private LocalDateTime startTime;
@@ -34,8 +35,7 @@ public class Controller {
     public Controller (SensorArray sensorArray, int percentage) {
         this.sensorArray = sensorArray;
         this.percentage = percentage;
-        Thread thread = new Thread(sensorArray);
-        thread.start();
+        arrayThread = new Thread(sensorArray);
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
@@ -94,6 +94,7 @@ public class Controller {
     }
 
     public void start() {
+        arrayThread.start();
         for (Runnable runnable: strategists)    {
             Thread thread = new Thread(runnable);
             threads.add(thread);
@@ -109,6 +110,7 @@ public class Controller {
         for (Thread thread: threads)    {
             thread.interrupt();
         }
+        arrayThread.interrupt();
         status = 0;
         startTime = null;
     }
@@ -122,7 +124,9 @@ public class Controller {
     public void buySignal() {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
-            trade = new Trade(sensorArray, sensorArray.getStableBalance() / Math.round((float) 100 / percentage));
+            float price = ((float) percentage / 100) * sensorArray.getStableBalance();
+            System.out.println(price);
+            trade = new Trade(sensorArray, price);
             try {
                 trade.open();
                 status = 2;
