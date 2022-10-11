@@ -59,21 +59,24 @@ public class RangeSpotter implements Runnable, Observer {
     boolean inRange = false;
     float highSwitch = 0;
     float lowSwitch = 0;
+    boolean updated = false;
     while (!Thread.currentThread().isInterrupted()) {
       if (arrayUpdated) {
         arrayUpdated = false;
         if (shifting.getLast() == null)
           shifting.add(array.getMovingAverage(maRange));
-        else if ((shifting.getLast() != null) && (array.getMovingAverage(maRange) != shifting.getLast()))
-        shifting.add(array.getMovingAverage(maRange));
-        if (shifting.isFilled()) {
+        else if ((shifting.getLast() != null) && (array.getMovingAverage(maRange) != shifting.getLast())) {
+          shifting.add(array.getMovingAverage(maRange));
+          updated = true;
+        }
+        if ((shifting.isFilled() && updated)) {
+          updated = false;
           List<Float> averages = shifting.getStandardArray();
           Status status = getStatus(averages);
             if ((status == Bullish) && (averages.get(averages.size() - 1) > array.getMovingAverage(20)))  {
               if ((highSwitch == 0) || ((averages.get(averages.size() - 1)) > highSwitch)) {
                 highSwitch = averages.get(averages.size() - 1);
                 Interfacer.consolePrint("High switch");
-                System.out.println("High switch");
                 Toolkit.getDefaultToolkit().beep();
               }
               expiration = 0;
