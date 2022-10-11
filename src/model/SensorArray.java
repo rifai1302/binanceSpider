@@ -7,6 +7,10 @@ import com.binance.api.client.domain.market.CandlestickInterval;
 import javafx.scene.chart.XYChart;
 import observable.Observer;
 import observable.Observable;
+import view.Interfacer;
+
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -143,23 +147,30 @@ public class SensorArray implements Runnable, Observable {
     public void run()   {
         try {
             Thread.sleep(startDelay);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         LocalDateTime prevTime = LocalDateTime.now();
         int index = 0;
         while(!Thread.currentThread().isInterrupted()) {
             if (ChronoUnit.MILLIS.between(prevTime, LocalDateTime.now()) >= interval) {
-                candlesticks = client.getCandlestickBars(crypto + stable, CandlestickInterval.ONE_MINUTE);
-                prevTime = LocalDateTime.now();
-                updateObservers();
-                lastUpdate = candlesticks.get(candlesticks.size() - 1);
-                chartData = new XYChart.Series();
-                Candlestick last = candlesticks.get(candlesticks.size() - 2);
-                chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
-                index++;
-                float balance = (Float.parseFloat(client.getAccount().getAssetBalance(stable).getFree()));
-                if ((balance > 10) && (balanceHistory.get(balanceHistory.size() - 1) != balance))   {
-                    balanceHistory.add(balance);
+                try {
+                    candlesticks = client.getCandlestickBars(crypto + stable, CandlestickInterval.ONE_MINUTE);
+                    prevTime = LocalDateTime.now();
+                    updateObservers();
+                    lastUpdate = candlesticks.get(candlesticks.size() - 1);
+                    chartData = new XYChart.Series();
+                    Candlestick last = candlesticks.get(candlesticks.size() - 2);
+                    chartData.getData().add(new XYChart.Data(index, getMovingAverage(3)));
+                    index++;
+                    float balance = (Float.parseFloat(client.getAccount().getAssetBalance(stable).getFree()));
+                    if ((balance > 10) && (balanceHistory.get(balanceHistory.size() - 1) != balance)) {
+                        balanceHistory.add(balance);
+                    }
+                } catch (Exception s)  {
+                    Interfacer.consolePrint("Sensor array failure; no internet connection.");
+                    Interfacer.consolePrint("Exception caught.");
+                    s.printStackTrace();
                 }
             }
         }
