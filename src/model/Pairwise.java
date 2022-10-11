@@ -2,8 +2,6 @@ package model;
 
 import controller.Controller;
 
-import java.util.ArrayList;
-
 public class Pairwise {
 
   private final Controller controller;
