@@ -48,7 +48,6 @@ public class Trade {
         float quantity = usd / sensorArray.getLatestPrice();
         quantity -= 0.0001;
         openPrice = sensorArray.getLatestPrice();
-        System.out.println(formatter.format(quantity));
         client.newOrder(marketBuy(currency, formatter.format(quantity).replace(",", ".")));
         open = true;
         openTime = LocalDateTime.now();

@@ -125,7 +125,6 @@ public class Controller {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
             float price = ((float) percentage / 100) * sensorArray.getStableBalance();
-            System.out.println(price);
             trade = new Trade(sensorArray, price);
             try {
                 trade.open();
