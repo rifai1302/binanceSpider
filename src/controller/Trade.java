@@ -62,7 +62,7 @@ public class Trade {
             throw new TerminatedTradeException();
         }
         String temp = cryptoFormat(client.getAccount().getAssetBalance(sensorArray.getCryptoCoin()).getFree());
-        client.newOrder(marketSell(currency, String.valueOf(temp)));
+        client.newOrder(marketSell(currency, temp));
         endPrice = sensorArray.getLatestPrice();
         open = false;
         terminated = true;
