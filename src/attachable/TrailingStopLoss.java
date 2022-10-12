@@ -23,7 +23,11 @@ public class TrailingStopLoss extends Attachable implements Runnable {
 
         }
         while(trade.isOpen())   {
-            float close = Float.parseFloat(array.getLastInstantCandlestick().getClose());
+            float close = highest;
+            try {
+                close = Float.parseFloat(array.getLastInstantCandlestick().getClose());
+            } catch (Exception ignored) {
+            }
             if (close > highest)
                 highest = close;
             float boundary = (float) (highest - 50);
