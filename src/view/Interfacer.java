@@ -11,6 +11,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.effect.Bloom;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -49,6 +50,12 @@ public class Interfacer extends Application implements Runnable {
     format = new ChronoStringFormat();
     Scene scene = new Scene(root);
     primaryStage.setResizable(false);
+    ColorAdjust green = new ColorAdjust();
+    ColorAdjust red = new ColorAdjust();
+    green.setSaturation(1.0);
+    green.setHue(0.59);
+    red.setSaturation(1.0);
+    red.setHue(-0.05);
     Text currentBalance = (Text) root.lookup("#currentBalanceValue");
     Text lastTrade = (Text) root.lookup("#lastTradeValue");
     Text avgTrade = (Text) root.lookup("#averageTradeValue");
@@ -103,6 +110,24 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> totalProfit.setText(sensorArray.getTotalProfit() + " USDT");
       updater.add(update);
+      if (sensorArray.getAverageProfit() > 0) {
+        update = () -> avgTrade.setEffect(green);
+      } else {
+        update = () -> avgTrade.setEffect(red);
+      }
+      updater.add(update);
+        if (sensorArray.getTotalProfit() > 0) {
+          update = () -> totalProfit.setEffect(green);
+        } else {
+          update = () -> totalProfit.setEffect(red);
+        }
+        updater.add(update);
+        if (sensorArray.getLastProfit() > 0) {
+          update = () -> lastTrade.setEffect(green);
+        } else {
+          update = () -> lastTrade.setEffect(red);
+        }
+        updater.add(update);
       update = () -> trades.setText(String.valueOf(controller.getTrades()));
       updater.add(update);
       update = () -> sTrades.setText(String.valueOf(sensorArray.getSuccessfulTrades()));
