@@ -23,7 +23,7 @@
             <Font name="ArtifaktElement-Medium" size="27.0" />
          </font>
       </Text>
-      <Text fx:id="currentBalanceValue" fill="#00ffd9" fontSmoothingType="LCD" layoutX="274.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 USDT" wrappingWidth="140.27496337890625">
+      <Text fx:id="currentBalanceValue" fill="#94f8ff" fontSmoothingType="LCD" layoutX="274.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="button" text="0 USDT" wrappingWidth="140.27496337890625">
          <font>
             <Font name="ArtifaktElement-Regular" size="25.0" />
          </font>
