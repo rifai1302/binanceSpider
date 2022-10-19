@@ -1,11 +1,12 @@
 package controller;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import com.binance.api.client.BinanceApiRestClient;
 import model.SensorArray;
 import throwable.InsufficientFundsException;
-import model.Constants;
 import throwable.OngoingTradeException;
 import throwable.TerminatedTradeException;
 import throwable.UninitializedTradeException;
@@ -24,15 +25,18 @@ public class Trade {
     private float endPrice = 0;
     private LocalDateTime openTime;
     private float secondsOpen = 0;
+    private final String currency;
+    private final NumberFormat formatter = new DecimalFormat("0.0000");
 
     public Trade(SensorArray sensorArray, float usd) {
         this.usd = usd;
         this.sensorArray = sensorArray;
         this.client = sensorArray.getClient();
+        this.currency = sensorArray.getCryptoCoin() + sensorArray.getStableCoin();
     }
 
     public void open() throws Exception {
-        if (usd > sensorArray.getUSDTBalance()) {
+        if (usd > sensorArray.getStableBalance()) {
             throw new InsufficientFundsException();
         }
         if (open) {
@@ -41,11 +45,10 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        float quantity = (usd - (float) 0.5) / sensorArray.getLatestPrice();
+        float quantity = usd / sensorArray.getLatestPrice();
+        quantity -= 0.0001;
         openPrice = sensorArray.getLatestPrice();
-        quantity = (float)((float)Math.round(quantity * 10000.0) / 10000.0);
-        quantity = (float) (quantity - 0.0001);
-        client.newOrder(marketBuy(Constants.getCurrency(), String.valueOf(quantity)));
+        client.newOrder(marketBuy(currency, formatter.format(quantity).replace(",", ".")));
         open = true;
         openTime = LocalDateTime.now();
     }
@@ -57,8 +60,8 @@ public class Trade {
         if (terminated) {
             throw new TerminatedTradeException();
         }
-        String temp = btcFormat(client.getAccount().getAssetBalance("BTC").getFree());
-        client.newOrder(marketSell(Constants.getCurrency(), String.valueOf(temp)));
+        String temp = cryptoFormat(client.getAccount().getAssetBalance(sensorArray.getCryptoCoin()).getFree());
+        client.newOrder(marketSell(currency, temp));
         endPrice = sensorArray.getLatestPrice();
         open = false;
         terminated = true;
@@ -96,7 +99,7 @@ public class Trade {
         return openTime;
     }
 
-    public String btcFormat(String value)    {
+    private String cryptoFormat(String value)    {
         String[] splitter = value.split("\\.");
         String decimal = splitter[1];
         if (decimal.length() > 5)

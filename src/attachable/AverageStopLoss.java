@@ -17,18 +17,17 @@ public class AverageStopLoss extends Attachable implements Runnable {
     @Override
     public void run() {
         while (trade.isOpen()) {
+            try {
             if (!boundary)  {
-                if (sensorArray.getMovingAverage(4) > (sensorArray.getMovingAverage(20) + 15))
+                if (sensorArray.getMovingAverage(4) > (sensorArray.getMovingAverage(20) + 30))
                     boundary = true;
             } else if (Float.parseFloat(sensorArray.getLastInstantCandlestick().getClose())
                     < sensorArray.getMovingAverage(20)) {
                         System.out.println("Average stop sell signal");
                         controller.sellSignal();
                     }
-            try {
                 Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
     }

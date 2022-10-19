@@ -2,6 +2,7 @@ package controller;
 
 import attachable.Attachable;
 import attachable.AverageStopLoss;
+import attachable.ConnectionFailsafe;
 import attachable.TrailingStopLoss;
 import controller.commands.Command;
 import controller.strategist.RangeSpotter;
@@ -20,19 +21,21 @@ import java.util.ArrayList;
 public class Controller {
 
     private final SensorArray sensorArray;
+    private final Thread arrayThread;
     private Trade trade;
     private int status = 0;
     private LocalDateTime startTime;
     private int trades = 0;
+    private volatile int percentage;
     private boolean showUI = false;
     private volatile ArrayList<Runnable> strategists = new ArrayList<>();
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
-    public Controller (SensorArray sensorArray) {
+    public Controller (SensorArray sensorArray, int percentage) {
         this.sensorArray = sensorArray;
-        Thread thread = new Thread(sensorArray);
-        thread.start();
+        this.percentage = percentage;
+        arrayThread = new Thread(sensorArray);
         File iconFile = new File("fxml/trayicon.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
         PopupMenu popup = new PopupMenu();
@@ -74,8 +77,8 @@ public class Controller {
         }
     }
 
-    public void printBTC()  {
-        Interfacer.consolePrint(String.valueOf(sensorArray.getBTCBalance()));
+    public void printCrypto()  {
+        Interfacer.consolePrint(String.valueOf(sensorArray.getCryptoBalance()));
     }
 
     public void addStrategist(Runnable strategist)   {
@@ -91,6 +94,7 @@ public class Controller {
     }
 
     public void start() {
+        arrayThread.start();
         for (Runnable runnable: strategists)    {
             Thread thread = new Thread(runnable);
             threads.add(thread);
@@ -106,6 +110,7 @@ public class Controller {
         for (Thread thread: threads)    {
             thread.interrupt();
         }
+        arrayThread.interrupt();
         status = 0;
         startTime = null;
     }
@@ -119,7 +124,8 @@ public class Controller {
     public void buySignal() {
         if (trade == null) {
             Toolkit.getDefaultToolkit().beep();
-            trade = new Trade(sensorArray, sensorArray.getUSDTBalance());
+            float price = ((float) percentage / 100) * sensorArray.getStableBalance();
+            trade = new Trade(sensorArray, price);
             try {
                 trade.open();
                 status = 2;

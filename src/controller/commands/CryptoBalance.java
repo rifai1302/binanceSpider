@@ -2,11 +2,11 @@ package controller.commands;
 
 import controller.Controller;
 
-public class BTCBalance implements Command {
+public class CryptoBalance implements Command {
 
   @Override
   public byte execute(Controller controller)  {
-    controller.printBTC();
+    controller.printCrypto();
     return(0);
   }
 }

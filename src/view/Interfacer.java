@@ -11,15 +11,19 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.effect.Bloom;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Pairwise;
 import model.SensorArray;
 import javafx.scene.control.TextField;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -29,26 +33,29 @@ public class Interfacer extends Application implements Runnable {
 
   private static SensorArray sensorArray;
   private static Controller controller;
-  private volatile Parent root;
   private ChronoStringFormat format;
+  private static final ArrayList<Pairwise> pairs = new ArrayList<>();
   private static final ArrayList<String> consoleLog = new ArrayList<>();
+  private volatile boolean instantUpdate = false;
 
-  public void setSensorArray(SensorArray sensorArray)  {
-    Interfacer.sensorArray = sensorArray;
-  }
-
-  public void setController (Controller controller) {
-    Interfacer.controller = controller;
+  public void addPairwise(Pairwise pairwise)  {
+    pairs.add(pairwise);
   }
 
   @Override
   public void start(Stage primaryStage) throws IOException {
     Platform.setImplicitExit(false);
     URL url = new File("fxml/main.fxml").toURI().toURL();
-    root = FXMLLoader.load(url);
+    Parent root = FXMLLoader.load(url);
     format = new ChronoStringFormat();
     Scene scene = new Scene(root);
     primaryStage.setResizable(false);
+    ColorAdjust green = new ColorAdjust();
+    ColorAdjust red = new ColorAdjust();
+    green.setSaturation(1.0);
+    green.setHue(0.59);
+    red.setSaturation(1.0);
+    red.setHue(-0.05);
     Text currentBalance = (Text) root.lookup("#currentBalanceValue");
     Text lastTrade = (Text) root.lookup("#lastTradeValue");
     Text avgTrade = (Text) root.lookup("#averageTradeValue");
@@ -60,9 +67,11 @@ public class Interfacer extends Application implements Runnable {
     Text fTrades = (Text) root.lookup("#failedTradesValue");
     Text success = (Text) root.lookup("#successRateValue");
     Text console = (Text) root.lookup("#consoleOutput");
+    Text crypto = (Text) root.lookup("#cryptoText");
     LineChart chart = (LineChart) root.lookup("#bitChart");
     NumberAxis xAxis = (NumberAxis) root.lookup("#xAxis");
     NumberAxis yAxis = (NumberAxis) root.lookup("#yAxis");
+    ImageView logo = (ImageView) root.lookup("#spiderLogo");
     xAxis.setAutoRanging(false);
     yAxis.setAutoRanging(false);
     xAxis.setLowerBound(0);
@@ -73,18 +82,25 @@ public class Interfacer extends Application implements Runnable {
     Thread thread = new Thread(() -> {
       while (true) {
       ArrayList<Runnable> updater = new ArrayList<>();
-      Runnable update = () -> currentBalance.setText(sensorArray.getUSDTBalance() + " USDT");
+      Runnable update = () -> currentBalance.setText(sensorArray.getStableBalance() + " " + sensorArray.getStableCoin());
+      updater.add(update);
+      update = () -> crypto.setText(sensorArray.getCryptoCoin());
       updater.add(update);
       XYChart.Series data = sensorArray.getData();
-      if (data != null) {
-        int index = Integer.parseInt((data.getData().toString().split(",")[0]).split("\\[")[2]);
-        float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
-        yAxis.setUpperBound(price + 175);
-        yAxis.setLowerBound(price - 175);
-        xAxis.setLowerBound(index - 20);
-        xAxis.setUpperBound(index + 10);
-        update = () -> chart.getData().add(data);
-        updater.add(update);
+      try {
+        if (data != null) {
+          int index = Integer.parseInt((data.getData().toString().split(",")[0]).split("\\[")[2]);
+          float price = Float.parseFloat(data.getData().get(0).toString().split(",")[1]);
+          yAxis.setUpperBound(price + 175);
+          yAxis.setLowerBound(price - 175);
+          xAxis.setLowerBound(index - 20);
+          xAxis.setUpperBound(index + 10);
+          update = () -> chart.getData().add(data);
+          updater.add(update);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        Interfacer.consolePrint("Interfacer exception caught.");
       }
       update = () -> lastTrade.setText(sensorArray.getLastProfit() + " USDT");
       updater.add(update);
@@ -94,6 +110,24 @@ public class Interfacer extends Application implements Runnable {
       updater.add(update);
       update = () -> totalProfit.setText(sensorArray.getTotalProfit() + " USDT");
       updater.add(update);
+      if (sensorArray.getAverageProfit() > 0) {
+        update = () -> avgTrade.setEffect(green);
+      } else {
+        update = () -> avgTrade.setEffect(red);
+      }
+      updater.add(update);
+        if (sensorArray.getTotalProfit() > 0) {
+          update = () -> totalProfit.setEffect(green);
+        } else {
+          update = () -> totalProfit.setEffect(red);
+        }
+        updater.add(update);
+        if (sensorArray.getLastProfit() > 0) {
+          update = () -> lastTrade.setEffect(green);
+        } else {
+          update = () -> lastTrade.setEffect(red);
+        }
+        updater.add(update);
       update = () -> trades.setText(String.valueOf(controller.getTrades()));
       updater.add(update);
       update = () -> sTrades.setText(String.valueOf(sensorArray.getSuccessfulTrades()));
@@ -148,7 +182,20 @@ public class Interfacer extends Application implements Runnable {
         }
       }
         try {
-          Thread.sleep(1000);
+          if(!instantUpdate) {
+            Thread.sleep(1000);
+          } else {
+            if ((controller.getStatus() == 1) || (controller.getStatus() == 2))  {
+              Bloom bloom = new Bloom();
+              bloom.setThreshold(0.23);
+              update = () -> logo.setEffect(bloom);
+              updater.add(update);
+            } else {
+              update = () -> logo.setEffect(null);
+              updater.add(update);
+            }
+            instantUpdate = false;
+          }
         } catch (InterruptedException ignored) {
         }
         for (Runnable runnable: updater) {
@@ -176,6 +223,8 @@ public class Interfacer extends Application implements Runnable {
 
   @Override
   public void run() {
+    controller = pairs.get(0).getController();
+    sensorArray = pairs.get(0).getSensorArray();
     launch();
   }
 
@@ -219,6 +268,42 @@ public class Interfacer extends Application implements Runnable {
         consolePrint("Comandă necunoscută");
       field.setText("");
     }
+  }
+
+  public void btcMouseEntered(MouseEvent event) {
+    event.consume();
+    Glow glow = new Glow();
+    glow.setLevel(1.0);
+    ((Node) event.getSource()).setEffect(glow);
+  }
+
+  public void btcMouseExited(MouseEvent event)  {
+    event.consume();
+    ((Node) event.getSource()).setEffect(null);
+  }
+
+  public void btcMouseClicked(MouseEvent event) {
+    controller = pairs.get(0).getController();
+    sensorArray = pairs.get(0).getSensorArray();
+    instantUpdate = true;
+  }
+
+  public void ethMouseEntered(MouseEvent event) {
+    event.consume();
+    Glow glow = new Glow();
+    glow.setLevel(1.0);
+    ((Node) event.getSource()).setEffect(glow);
+  }
+
+  public void ethMouseExited(MouseEvent event)  {
+    event.consume();
+    ((Node) event.getSource()).setEffect(null);
+  }
+
+  public void ethMouseClicked(MouseEvent event) {
+    controller = pairs.get(1).getController();
+    sensorArray = pairs.get(1).getSensorArray();
+    instantUpdate = true;
   }
 
 
