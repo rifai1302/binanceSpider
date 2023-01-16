@@ -24,8 +24,8 @@ public class binanceSpider {
         SensorArray btcSensorArray = new SensorArray(client, 30000, "BTC", "USDT", 0);
         SensorArray ethSensorArray = new SensorArray(client, 30000, "ETH", "USDT", 30000);
         Interfacer interfacer = new Interfacer();
-        Controller btcController = new Controller(btcSensorArray, 100);
-        Controller ethController = new Controller(ethSensorArray, 100);
+        Controller btcController = new Controller(btcSensorArray, 100, true);
+        Controller ethController = new Controller(ethSensorArray, 100, false);
         Pairwise btc = new Pairwise(btcController, btcSensorArray);
         Pairwise eth = new Pairwise(ethController, ethSensorArray);
         interfacer.addPairwise(btc);

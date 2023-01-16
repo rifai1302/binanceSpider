@@ -32,20 +32,24 @@ public class Controller {
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
-    public Controller (SensorArray sensorArray, int percentage) {
+    public Controller (SensorArray sensorArray, int percentage, boolean enableTray) {
         this.sensorArray = sensorArray;
         this.percentage = percentage;
         arrayThread = new Thread(sensorArray);
-        File iconFile = new File("fxml/trayicon.png");
-        Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
-        PopupMenu popup = new PopupMenu();
-        MenuItem item = new MenuItem();
-        item.setLabel("Inchide");
-        popup.add(item);
-        TrayIcon trayIcon = new TrayIcon(icon, "The Binance Spider", popup);
+        TrayIcon trayIcon = null;
+        if (enableTray) {
+            File iconFile = new File("fxml/trayicon.png");
+            Image icon = Toolkit.getDefaultToolkit().getImage(iconFile.getAbsolutePath());
+            PopupMenu popup = new PopupMenu();
+            MenuItem item = new MenuItem();
+            item.setLabel("Inchide");
+            popup.add(item);
+            trayIcon = new TrayIcon(icon, "The Binance Spider", popup);
+        }
         addStrategist(new RangeSpotter(sensorArray, this, 5));
         //addAttachable(new AverageStopLoss(sensorArray, this));
         addAttachable(new TrailingStopLoss(sensorArray, this));
+        if (trayIcon != null)
         trayIcon.addActionListener(e -> {
             showUI = true;
             try {
@@ -54,7 +58,7 @@ public class Controller {
             }
             showUI = false;
         });
-
+        if (trayIcon != null)
         try {
             SystemTray tray = SystemTray.getSystemTray();
             tray.add(trayIcon);
