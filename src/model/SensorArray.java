@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SensorArray implements Runnable, Observable {
@@ -104,6 +105,96 @@ public class SensorArray implements Runnable, Observable {
                 .getAssetBalance(crypto).getFree();
     }
 
+    public List<Float> getLastFifteenClose()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getClose()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenOpen()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getOpen()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenHigh()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getHigh()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenLow()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getLow()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenVolume()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getVolume()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Long> getLastFifteenTrades()   {
+        final ArrayList<Long> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add((candlesticks.get(i).getNumberOfTrades()));
+        }
+        List<Long> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenQuoteAsset()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getQuoteAssetVolume()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenBuyBase()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getTakerBuyBaseAssetVolume()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
+    public List<Float> getLastFifteenBuyQuote()   {
+        final ArrayList<Float> array = new ArrayList<>();
+        for (int i = 0; i < 15; i++)    {
+            array.add(Float.parseFloat(candlesticks.get(i).getTakerBuyQuoteAssetVolume()));
+        }
+        List<Float> list = new LinkedList<>();
+        list = array.stream().toList();
+        return list;
+    }
+
     public Candlestick getLastCandlestick() {
         return candlesticks.get(candlesticks.size() - 1);
     }
@@ -137,6 +228,7 @@ public class SensorArray implements Runnable, Observable {
     public String getCryptoCoin()   {
         return crypto;
     }
+
 
     @Override
     public void addObserver (Observer observer)   {

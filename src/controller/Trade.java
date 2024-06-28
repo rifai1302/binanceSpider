@@ -10,6 +10,9 @@ import throwable.InsufficientFundsException;
 import throwable.OngoingTradeException;
 import throwable.TerminatedTradeException;
 import throwable.UninitializedTradeException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 import static com.binance.api.client.domain.account.NewOrder.marketBuy;
 import static com.binance.api.client.domain.account.NewOrder.marketSell;
@@ -46,9 +49,12 @@ public class Trade {
             throw new TerminatedTradeException();
         }
         float quantity = usd / sensorArray.getLatestPrice();
-        quantity -= 0.0001;
+        quantity -= 0.00002;
         openPrice = sensorArray.getLatestPrice();
-        client.newOrder(marketBuy(currency, formatter.format(quantity).replace(",", ".")));
+        BigDecimal bigDecimal = new BigDecimal(quantity);
+        bigDecimal = bigDecimal.round(new MathContext(2, RoundingMode.CEILING));
+        System.out.println(bigDecimal.toPlainString());
+        client.newOrder(marketBuy(currency, bigDecimal.toPlainString().replace(",", ".")));
         open = true;
         openTime = LocalDateTime.now();
     }

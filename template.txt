@@ -1,0 +1,11 @@
+You are a bitcoin day scalping bot. Following arrays represent technical data of the last fifteen minutes in ascending order (first value is the earliest), where each value represents one minute.
+Closing prices of last fifteen minutes: [61569.98, 61579.99, 61564.02, 61548.02, 61520.01, 61540.0, 61540.0, 61575.92, 61598.01, 61606.94, 61643.9, 61650.01, 61620.01, 61562.47, 61590.0]
+Open prices of last fifteen minutes: [61538.01, 61569.98, 61579.99, 61564.02, 61548.01, 61520.01, 61540.0, 61539.99, 61575.91, 61598.01, 61606.94, 61643.9, 61650.01, 61620.01, 61562.46]
+High prices of last fifteen minutes: [61570.0, 61579.99, 61579.99, 61564.02, 61548.01, 61540.0, 61540.0, 61575.92, 61599.19, 61606.94, 61643.9, 61678.83, 61663.46, 61620.01, 61590.0]
+Low prices of last fifteen minutes: [61538.0, 61560.0, 61558.01, 61544.0, 61520.0, 61520.0, 61539.99, 61539.99, 61575.91, 61598.0, 61600.0, 61643.89, 61620.0, 61554.72, 61562.46]
+Trade volumes of last fifteen minutes: [15.54903, 12.21827, 16.15057, 15.82376, 10.304, 19.49708, 5.75985, 21.64781, 15.83148, 6.51458, 19.12086, 60.77067, 21.6785, 28.85634, 13.45953]
+Quote assets of last fifteen minutes: [957145.75, 752285.3, 994402.0, 973956.3, 633953.9, 1199603.0, 354461.16, 1332580.9, 975058.8, 401304.2, 1178338.2, 3747525.0, 1336424.9, 1777066.4, 828733.3]
+Number of trades of last fifteen minutes: [582, 506, 573, 562, 632, 725, 278, 722, 555, 295, 719, 1066, 798, 628, 717]
+Taker buy base asset volume of last fifteen minutes: [8.86307, 8.85253, 7.39775, 9.20222, 1.51725, 14.87845, 5.08729, 17.57593, 11.68089, 4.65051, 12.55452, 38.1764, 10.34125, 5.46137, 6.445]
+Taker buy quote asset volume of last fifteen minutes: [545517.0, 545060.8, 455446.66, 566368.7, 93346.83, 915401.94, 313071.8, 1081936.4, 719409.4, 286466.1, 773666.5, 2354264.5, 637499.8, 336239.6, 396840.62]
+You need to decide whether to buy, sell or hold based on certain technical data. Your position is currently open, which means you can either sell or hold. You are scalping, so you want to predict short rises to obtain small profits. Answer with one word representing your recommended action (HOLD, BUY or SELL).

@@ -5,18 +5,23 @@ import attachable.AverageStopLoss;
 import attachable.ConnectionFailsafe;
 import attachable.TrailingStopLoss;
 import controller.commands.Command;
+import controller.strategist.AI;
 import controller.strategist.RangeSpotter;
 import model.SensorArray;
 import view.Interfacer;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.math.RoundingMode;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+
+import javax.websocket.DeploymentException;
 
 public class Controller {
 
@@ -32,7 +37,7 @@ public class Controller {
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
 
-    public Controller (SensorArray sensorArray, int percentage, boolean enableTray) {
+    public Controller (SensorArray sensorArray, int percentage, boolean enableTray) throws DeploymentException, IOException, URISyntaxException {
         this.sensorArray = sensorArray;
         this.percentage = percentage;
         arrayThread = new Thread(sensorArray);
@@ -46,7 +51,8 @@ public class Controller {
             popup.add(item);
             trayIcon = new TrayIcon(icon, "The Binance Spider", popup);
         }
-        addStrategist(new RangeSpotter(sensorArray, this, 5));
+        //addStrategist(new RangeSpotter(sensorArray, this, 5));
+        addStrategist(new AI(sensorArray, this));
         //addAttachable(new AverageStopLoss(sensorArray, this));
         addAttachable(new TrailingStopLoss(sensorArray, this));
         if (trayIcon != null)
