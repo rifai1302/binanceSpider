@@ -30,7 +30,7 @@ public class TrailingStopLoss extends Attachable implements Runnable {
             }
             if (close > highest)
                 highest = close;
-            float boundary = highest - 75;
+            float boundary = highest - 400;
             if (close < boundary)   {
                 try {
                     controller.sellSignal();

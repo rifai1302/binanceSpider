@@ -107,7 +107,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenClose()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getClose()));
         }
         List<Float> list = new LinkedList<>();
@@ -117,7 +117,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenOpen()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getOpen()));
         }
         List<Float> list = new LinkedList<>();
@@ -127,7 +127,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenHigh()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getHigh()));
         }
         List<Float> list = new LinkedList<>();
@@ -137,7 +137,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenLow()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getLow()));
         }
         List<Float> list = new LinkedList<>();
@@ -147,7 +147,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenVolume()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getVolume()));
         }
         List<Float> list = new LinkedList<>();
@@ -157,7 +157,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Long> getLastFifteenTrades()   {
         final ArrayList<Long> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add((candlesticks.get(i).getNumberOfTrades()));
         }
         List<Long> list = new LinkedList<>();
@@ -167,7 +167,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenQuoteAsset()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getQuoteAssetVolume()));
         }
         List<Float> list = new LinkedList<>();
@@ -177,7 +177,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenBuyBase()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getTakerBuyBaseAssetVolume()));
         }
         List<Float> list = new LinkedList<>();
@@ -187,7 +187,7 @@ public class SensorArray implements Runnable, Observable {
 
     public List<Float> getLastFifteenBuyQuote()   {
         final ArrayList<Float> array = new ArrayList<>();
-        for (int i = 0; i < 15; i++)    {
+        for (int i = candlesticks.size() - 1; i >= candlesticks.size() - 15; i--)    {
             array.add(Float.parseFloat(candlesticks.get(i).getTakerBuyQuoteAssetVolume()));
         }
         List<Float> list = new LinkedList<>();

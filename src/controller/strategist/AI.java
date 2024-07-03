@@ -26,6 +26,7 @@ public class AI implements Runnable, Observer {
     private final SensorArray array;
     private final Controller controller;
     private final OllamaAPI api;
+    private volatile boolean arrayUpdated = false;
 
     public AI(SensorArray array, Controller controller) throws IOException, URISyntaxException {
         this.array = array;
@@ -40,13 +41,14 @@ public class AI implements Runnable, Observer {
 
     @Override
     public void observableUpdated() {
-
+        arrayUpdated = true;
     }
 
     @Override
     public void run() {
         Interfacer.consolePrint("AI strategist started.");
         while (!Thread.currentThread().isInterrupted()) {
+            if (arrayUpdated){
               List<Float> lastClose = array.getLastFifteenClose();
               List<Float> lastOpen = array.getLastFifteenOpen();
               List<Float> lastHigh = array.getLastFifteenHigh();
@@ -58,16 +60,37 @@ public class AI implements Runnable, Observer {
               List<Float> lastBuyQuote = array.getLastFifteenBuyQuote();
               String message = "";
               if (controller.getStatus() == 1) {
-                message = "You are a bitcoin day scalping bot. Following arrays represent technical data of the last fifteen minutes in ascending order (first value is the earliest), where each value represents one minute.\nClosing prices of last fifteen minutes: " + lastClose + "\nOpen prices of last fifteen minutes: " + lastOpen + "\nHigh prices of last fifteen minutes: " + lastHigh + "\nLow prices of last fifteen minutes: " + lastLow + "\nTrade volumes of last fifteen minutes: " + lastVolumes + "\nQuote assets of last fifteen minutes: " + lastquote + "\nNumber of trades in the last fifteen minutes: " + lastNumbers + "\nTaker buy base volumes of the last fifteen minutes: " + lastBuyBase + "\nTaker buy quote asset volumes of the last fifteen minutes: " + lastBuyQuote + "\nYour position is currently closed, which means you can hold or buy. Answer with only one word representing your recommended action.";
-              } else {
-                message = "You are a bitcoin day scalping bot. Following arrays represent technical data of the last fifteen minutes in ascending order (first value is the earliest), where each value represents one minute.\nClosing prices of last fifteen minutes: " + lastClose + "\nOpen prices of last fifteen minutes: " + lastOpen + "\nHigh prices of last fifteen minutes: " + lastHigh + "\nLow prices of last fifteen minutes: " + lastLow + "\nTrade volumes of last fifteen minutes: " + lastVolumes + "\nQuote assets of last fifteen minutes: " + lastquote + "\nNumber of trades in the last fifteen minutes: " + lastNumbers + "\nTaker buy base volumes of the last fifteen minutes: " + lastBuyBase + "\nTaker buy quote asset volumes of the last fifteen minutes: " + lastBuyQuote + "\nYour position is currently open, which means you can hold or sell. Answer with only one word representing your recommended action.";
-              }
+                message = (
+                    "You are a bitcoin day scalping bot. The following arrays represent the technical data of bitcoin's price history over the last few minutes, where the first value is the latest, and each value represents one minute.\n"
+                     + "Closing prices of the last 15 minutes: " + lastClose + "\n"
+                     + "High prices of the last 15 minutes: " + lastHigh + "\n"
+                     + "Low prices of the last 15 minutes: " + lastLow + "\n"
+                     + "Trade volumes of the last 15 minutes: " + lastVolumes + "\n"
+                     + "Quote assets of the last 15 minutes: " + lastquote + "\n"
+                     + "Number of trades in the last 15 minutes: " + lastNumbers + "\n"
+                     + "Taker buy base volumes of the last 15 minutes: " + lastBuyBase + "\n"
+                     + "Taker buy quote asset volumes of the last 15 minutes: " + lastBuyQuote + "\n"
+                     + "Based on this data, you need to predict bitcoin's price movements and decide whether to hold or buy. Your current position is closed, meaning you can either hold or buy. Respond with only one word: HOLD or BUY."
+                );
+            } else {
+                message = (
+                    "You are a bitcoin day scalping bot. The following arrays represent the technical data of bitcoin's price history over the last few hours, where the first value is the latest, and each value represents one minute.\n"
+                     + "Closing prices of the last 15 minutes: " + lastClose + "\n"
+                     + "High prices of the last 15 minutes: " + lastHigh + "\n"
+                     + "Low prices of the last 15 minutes: " + lastLow + "\n"
+                     + "Trade volumes of the last 15 minutes: " + lastVolumes + "\n"
+                     + "Quote assets of the last 15 minutes: " + lastquote + "\n"
+                     + "Number of trades in the last 15 minutes: " + lastNumbers + "\n"
+                     + "Taker buy base volumes of the last 15 minutes: " + lastBuyBase + "\n"
+                     + "Taker buy quote asset volumes of the last 15 minutes: " + lastBuyQuote + "\n"
+                     + "Based on this data, you need to predict bitcoin's price movements and decide whether to hold or buy. Your current position is open, meaning you can either hold or sell. You have bought bitcoin when its price was " + controller.getLastOpenPrice() + ". " + "You need to secure short-term profits, so if the price gives any sign of dropping, sell. Respond with only one word: HOLD or SELL."
+                );}
               System.out.println("\n\n\n\n\n\n\n\n\n" + message);
               
               try {
                 OptionsBuilder ooptions = new OptionsBuilder();
                 OllamaResult result =
-                    api.generate(OllamaModelType.LLAMA2, message, new OptionsBuilder().build());
+                    api.generate("nous-hermes2:34b", message, new OptionsBuilder().build());
                 Interfacer.consolePrint("Message from AI pipeline: " + result.getResponse().toLowerCase());
                 if(result.getResponse().toLowerCase().equals("buy")){
                     controller.buySignal();
@@ -78,11 +101,8 @@ public class AI implements Runnable, Observer {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            try {
-                Thread.sleep(30000);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            arrayUpdated = false;
+        }
         }
         System.out.println("Stopped.");
     }

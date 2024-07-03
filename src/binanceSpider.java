@@ -21,8 +21,8 @@ public class binanceSpider {
         final String secret = reader.readLine();
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey, secret);
         BinanceApiRestClient client = factory.newRestClient();
-        SensorArray btcSensorArray = new SensorArray(client, 30000, "BTC", "USDT", 0);
-        SensorArray ethSensorArray = new SensorArray(client, 30000, "ETH", "USDT", 30000);
+        SensorArray btcSensorArray = new SensorArray(client, 30000, "BTC", "USDC", 0);
+        SensorArray ethSensorArray = new SensorArray(client, 30000, "ETH", "USDC", 30000);
         Interfacer interfacer = new Interfacer();
         Controller btcController = new Controller(btcSensorArray, 100, true);
         Controller ethController = new Controller(ethSensorArray, 100, false);

@@ -8,12 +8,14 @@ import controller.commands.Command;
 import controller.strategist.AI;
 import controller.strategist.RangeSpotter;
 import model.SensorArray;
+import throwable.UninitializedTradeException;
 import view.Interfacer;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
@@ -36,6 +38,7 @@ public class Controller {
     private volatile ArrayList<Runnable> strategists = new ArrayList<>();
     private volatile ArrayList<Thread> threads = new ArrayList<>();
     private volatile ArrayList<Attachable> attachables = new ArrayList<>();
+    private String lastBuyPrice;
 
     public Controller (SensorArray sensorArray, int percentage, boolean enableTray) throws DeploymentException, IOException, URISyntaxException {
         this.sensorArray = sensorArray;
@@ -168,6 +171,15 @@ public class Controller {
 
     public void tradeClosed()   {
         trade = null;
+    }
+
+    public float getLastOpenPrice() {
+        try {
+            return trade.getOpenPrice();
+        } catch (UninitializedTradeException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public int getStatus() {
