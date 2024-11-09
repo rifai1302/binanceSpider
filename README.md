@@ -7,6 +7,6 @@ A Java-based Bitcoin scalping bot with a JavaFX UI, designed for daytime trading
 ## Features
 
 - **Real-Time Price Monitoring** via the Binance API
-- **Automated Scalping Strategy** with built-in stop-loss strategies such as trailing stop loss and attachable "strategists" such as a simple range spotter and a more complex Ollama-based AI strategist
+- **Automated Scalping Strategy** with built-in stop-loss strategies such as trailing stop loss and attachable "strategists" such as a simple range spotter and a more complex Ollama-based AI strategist, as well as the option to use two or more strategists at the same time
 - **JavaFX UI** displaying live price charts, trade history, and profit/loss stats
 - **Connection failsafe** which detects internet connection loss and continuously attempts to sell until the connection is restored before resuming normal operation
